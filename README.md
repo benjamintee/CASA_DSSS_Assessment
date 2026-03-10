@@ -1,4 +1,5 @@
 # CASA Data Science for Spatial Systems Assessment 2025/2025
+CASA 0006 Data Science for Spatial Systems 2025/2026
 
 This repository is a collection of files for the final assessment for the CASA 0006 Data Science for Spatial Systems module by Dr Huanfa Chen
 
