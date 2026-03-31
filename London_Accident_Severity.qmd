@@ -131,13 +131,13 @@ The final analytical feature set comprised 43 variables in 7 groups.
 **Target variable**
 
 | Variable | Type | Definition |
-|----------------|----------|---------------------------------------------|
+|---------------|---------|-----------------------------------------------|
 | `severity_binary` | Binary | 1 = KSI (Fatal or Serious); 0 = Slight. Derived from STATS19 `collision_severity` codes 1 and 2. |
 
 **Graph centrality (3)**
 
 | Variable | Type | Definition |
-|-----------------|----------|---------------------------------------------|
+|----------------|---------|-----------------------------------------------|
 | `closeness_centrality` | Continuous | Reciprocal of mean shortest-path distance from node to all others; reflects network accessibility. |
 | `betweenness_centrality` | Continuous | Proportion of all shortest paths passing through a node; reflects throughput load and conflict potential. |
 | `degree_centrality` | Continuous | Number of edges connected to a node, normalised by maximum possible; reflects junction complexity. |
@@ -145,7 +145,7 @@ The final analytical feature set comprised 43 variables in 7 groups.
 **Temporal (4)**
 
 | Variable | Type | Definition |
-|-----------------|----------|---------------------------------------------|
+|----------------|---------|-----------------------------------------------|
 | `hour_of_collision` | Integer | Hour of day (0–23); proxy for prevailing operating speeds and traffic state. |
 | `time_period_enc` | Ordinal | AM peak / inter-peak / PM peak / night; captures systematic temporal severity patterns. |
 | `year` | Integer | Collision year (2020–2024); captures long-term drift and structural changes in road safety. |
@@ -154,7 +154,7 @@ The final analytical feature set comprised 43 variables in 7 groups.
 **Collision environment (9)**
 
 | Variable | Type | Definition |
-|-----------------|----------|---------------------------------------------|
+|----------------|--------|------------------------------------------------|
 | `speed_limit` | Ordinal | Posted speed limit in mph (20–70). |
 | `road_type` | Categorical | Roundabout, One-way street, single carriageway, dual carriageway, slip road |
 | `first_road_class` | Categorical | Motorway, Major A-road, A-road, B-road, unclassified |
@@ -168,7 +168,7 @@ The final analytical feature set comprised 43 variables in 7 groups.
 **Deprivation — three dimensions (3)**
 
 | Variable | Type | Definition |
-|-----------------|----------|---------------------------------------------|
+|----------------|--------|------------------------------------------------|
 | `imd_decile` | Ordinal | IMD 2019 decile of accident LSOA (1 = most deprived); captures road environment quality. |
 | `mean_driver_imd` | Continuous | Mean IMD decile of drivers' home postcodes per collision; proxy for vehicle quality and risk behaviour. |
 | `mean_casualty_imd` | Continuous | Mean IMD decile of casualties' home postcodes per collision; proxy for individual vulnerability. |
@@ -176,7 +176,7 @@ The final analytical feature set comprised 43 variables in 7 groups.
 **Vehicle-level aggregates (12)**
 
 | Variable | Type | Definition |
-|-----------------|----------|---------------------------------------------|
+|----------------|--------|------------------------------------------------|
 | `motorcycle_involved` | Binary | Any motorcycle or moped involved. |
 | `hgv_involved` | Binary | Any heavy goods vehicle involved. |
 | `cycle_involved` | Binary | Any pedal cycle involved. |
@@ -193,7 +193,7 @@ The final analytical feature set comprised 43 variables in 7 groups.
 **Casualty-level aggregates (9)**
 
 | Variable | Type | Definition |
-|-----------------|----------|---------------------------------------------|
+|----------------|--------|------------------------------------------------|
 | `pedestrian_casualty` | Binary | At least one pedestrian casualty. |
 | `motorcyclist_casualty` | Binary | At least one motorcyclist casualty. |
 | `cyclist_casualty` | Binary | At least one cyclist casualty. |
@@ -207,7 +207,7 @@ The final analytical feature set comprised 43 variables in 7 groups.
 **Traffic volume and speed (3)**
 
 | Variable | Type | Definition |
-|-----------------|----------|---------------------------------------------|
+|----------------|--------|------------------------------------------------|
 | `aadf_log` | Continuous | Log-transformed total annual average daily motor vehicle flow at nearest count point. |
 | `accident_rate_clipped` | Continuous | Accidents per million vehicle-days at nearest count point (99th-percentile clipped). |
 | `avg_speed_kph` | Continuous | LAEI 2022 average operating speed: major-road link speed (≤30 m match) or minor-road 1 km² grid fallback. |
@@ -217,7 +217,7 @@ The final analytical feature set comprised 43 variables in 7 groups.
 The table summarises data completeness at each integration stage.
 
 | Stage | Records | Notes |
-|----------------------|-----------|---------------------------------------|
+|----------------------|------------|--------------------------------------|
 | STATS19 national (2020–2024) | \~1,900,000 | England & Wales, all severities |
 | Filtered to Greater London boundary | 109,024 | Point-in-polygon clip to GLA boundary |
 | LAEI road speed assigned | 109,023 | 99.99% coverage; 1 record unmatched |
@@ -647,7 +647,7 @@ One challenge in modelling accident severity is **target class imbalance**. Trai
 Model selection follows a nested cross-validation strategy. An outer Stratified K-Fold (k = 5) partitions the 70% training set. Within each outer fold, a `GridSearchCV` inner loop (k = 3) searched the following hyper-parameter spaces:
 
 | Model | Parameters searched |
-|--------------|----------------------------------------------------------|
+|----------|------------------------------------------------------------|
 | Decision Tree | `max_depth` $∈$ {12, 20}; `min_samples_leaf` $∈$ {50, 100}; `class_weight` $∈$ {balanced, None} |
 | Random Forest | `n_estimators` $∈$ {200, 500}; `max_depth` $∈$ {12, 16}; `max_features` $∈$ {sqrt, 0.3}; `class_weight` $∈$ {balanced, None} |
 | XGBoost | `max_depth` $∈$ {4, 6}; `learning_rate` $∈$ {0.05, 0.1}; `n_estimators` $∈$ {200, 500}; `scale_pos_weight` $∈$ {1, 3, 5} |
@@ -1029,7 +1029,6 @@ else:
     sv = shap_values
 
 # ── SHAP Beeswarm Plot ───────────────────────────────────────────────────────
-print("SHAP Beeswarm Plot — feature impact on Fatal/Serious prediction")
 fig, ax = plt.subplots(figsize=(10, 10))
 shap.summary_plot(sv, X_test, feature_names=feature_cols,
                   show=False, max_display=20)
@@ -1038,7 +1037,6 @@ plt.tight_layout()
 plt.show()
 
 # ── SHAP Feature Importance (mean |SHAP|) ────────────────────────────────────
-print("\nSHAP Feature Importance — mean |SHAP value|")
 fig, ax = plt.subplots(figsize=(10, 8))
 shap.summary_plot(sv, X_test, feature_names=feature_cols,
                   plot_type='bar', show=False, max_display=20)
@@ -1128,7 +1126,7 @@ print(f"\nRetained features: {len(feature_cols) - len(drop_candidates)}")
 Seven engineered interaction terms were evaluated alongside ablation on the held-out test set, comparing the contribution of graph features and the effect of pruning zero/negative-importance variables.
 
 | Term | Components | Rationale |
-|------------------|-------------------------|-----------------------------|
+|--------------|------------------------|----------------------------------|
 | `hour_x_light` | hour x light_conditions | Night-time darkness amplifies time-of-day risk |
 | `imd_x_pedestrian` | mean_casualty_imd x pedestrian_casualty | Deprivation amplifies pedestrian vulnerability |
 | `btwn_x_motorcyclist` | betweenness x motorcyclist_casualty | Major junction x motorcycle collision |
@@ -1140,7 +1138,7 @@ Seven engineered interaction terms were evaluated alongside ablation on the held
 Three feature configurations were evaluated:
 
 | Variant | Features | Threshold | AUC | MCC | Sensitivity | Specificity | G-Mean |
-|-------------------|-------|-------|-------|-------|---------|---------|---------|
+|--------------------|--------|---------|------|------|--------|--------|-------|
 | \(1\) Original − graph | 40 | 0.48 | 0.7193 | 0.2422 | 0.5305 | 0.7674 | 0.6381 |
 | \(2\) Original + 7 interactions | 50 | 0.42 | 0.7333 | 0.2538 | 0.6394 | 0.6942 | 0.6662 |
 | \(3\) Original + 7 interactions, pruned | 45 | 0.43 | 0.7362 | 0.2583 | 0.6249 | 0.7110 | 0.6666 |
