@@ -1,0 +1,229 @@
+---
+date: last-modified
+title: Predicting Road Collision Severity in London - Integrating Network Centrality, Traffic Speed, and Deprivation (2020-2024)
+execute:
+  echo: false
+  freeze: true
+format:
+  html:
+    code-copy: true
+    code-link: true
+    toc: true
+    toc-title: On this page
+    toc-depth: 2
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+  pdf:
+    dpi: 150
+    prefer-html: true
+    include-in-header:
+      text: |
+        \usepackage{float}
+        \usepackage{placeins}
+        \usepackage[justification=centering]{caption}
+        \usepackage{caption}
+        \captionsetup[table]{font={normalsize,bf}}
+        \addtokomafont{disposition}{\rmfamily}
+        \AtBeginEnvironment{verbatim}{\scriptsize}
+        \AtBeginEnvironment{table}{\scriptsize}
+        \AtBeginEnvironment{longtable}{\footnotesize}
+    mainfont: "Source Serif 4"
+    sansfont: "Source Sans 3"
+    monofont: "Source Code Pro"
+    papersize: a4
+    geometry:
+      - top=20mm
+      - left=15mm
+      - right=15mm
+      - bottom=25mm
+      - heightrounded
+    toc: false
+    number-sections: false
+    colorlinks: true
+    highlight-style: github
+---
+
+> **Author:** Tee Chin Min Benjamin (A25049107)  
+> **Date:** 20 Apr 2026  
+> **Module:** Data Science for Spatial Systems (DSSS) by Dr Huanfa Chen  
+> **Word count (narrative only):** ~1,690 words  
+
+Source code and data can be found at the [attached]{.underline} (<https://github.com/benjamintee/CASA_QM_Assessment>)
+
+HTML version can be found at the [attached]{.underline} (<https://benjamintee.github.io/CASA_QM_Assessment/Energy_Cost.html>)
+
+---
+
+## 1. Introduction
+
+Road traffic collisions are a leading cause of preventable death and serious injury. In London, despite a [Vision Zero strategy](https://www.london.gov.uk/programmes-strategies/transport/improving-londons-roads/vision-zero-london) targeting a 70% reduction in Killed or Seriously Injured (KSI) casualties by 2030, approximately 3,700 people were killed or seriously injured on roads in 2024, with nearly 60% comprising pedestrians and cyclists [(TfL, 2024)](https://content.tfl.gov.uk/casualties-in-greater-london-2024.pdf). KSI, defined within STATS19 as fatalities and injuries involving fracture, concussion, internal trauma, or inpatient hospitalisation, represents an area for critical attention. Understanding *which* collisions result in KSI outcomes and *why* has implications for infrastructure investment, emergency resource allocation, and targeted safety intervention.
+
+KSI risk determinants are multi-dimensional. Speed limit, lighting, road surface, and junction characteristics emerge as primary severity predictors in ensemble modelling studies [(Tong, 2025)](https://arxiv.org/pdf/2512.04022). Deprivation compounds this, with pedestrians in the most deprived neighbourhoods facing higher KSI probability than those in least deprived areas [(Christie et al., 2019)](https://discovery.ucl.ac.uk/id/eprint/10206226/1/Inequalities%20in%20road%20safety%20outcomes%20Christie.pdf). 
+
+Critically, [Sarkar, Webster & Kumari (2018)](https://www-tandfonline-com.libproxy.ucl.ac.uk/doi/epdf/10.1080/15568318.2017.1402972?needAccess=true) demonstrated in a Greater London study that street network topology, specifically betweenness centrality, divergence ratio, and hull radius, were associated with KSI odds alongside speed and deprivation, establishing that a location's structural position within the road network shapes severity outcomes. 
+
+This study combines OpenStreetMap-derived centrality measures with STATS19, the Index of Multiple Deprivation, DfT AADF traffic counts, and LAEI 2022 road speed data to predict KSI outcomes across London (2020–2024). Three tree-based classifiers are evaluated under stratified cross-validation with Synthetic Minority Over-sampling Technique (SMOTE) [(Chawla et al., 2002)](https://arxiv.org/pdf/1106.1813), and model decisions interpreted with SHAP [(Lundberg & Lee, 2017)](https://arxiv.org/pdf/1705.07874) to surface key predictors of collision severity.
+
+---
+## 2. Research Question
+
+**Primary Research Question:** To what extent do graph-derived network centrality measures, deprivation indicators, and casualty-level vulnerability factors jointly predict KSI outcomes in London road collisions (2020–2024)?
+
+**Sub-questions:**
+
+- **Network structure:** Do closeness and betweenness centrality independently predict elevated KSI risk after controlling for traffic volume, speed, and road environment, and does including graph features measurably improve model performance?
+
+- **Deprivation:** Which aspects of deprivation (area-level, driver, or casualty) most strongly shape KSI severity outcomes?
+
+- **Casualty vulnerability:** How do casualty characteristics such as mode of travel (pedestrian, cyclist, motorcyclist), age group, and collision complexity shape KSI probability?
+
+---
+## 3. Data
+
+### 3.1 Data Sources
+
+The analytical feature matrix was constructed from seven datasets. 
+
+| Dataset | Source | Spatial Coverage | Temporal Coverage |
+|---|---|---|---|
+| STATS19 — Collisions | DfT / data.gov.uk | England & Wales | 2020–2024 |
+| STATS19 — Vehicles | DfT / data.gov.uk | England & Wales | 2020–2024 |
+| STATS19 — Casualties | DfT / data.gov.uk | England & Wales | 2020–2024 |
+| London Road Network | OpenStreetMap via OSMnx | Greater London | Current |
+| Index of Multiple Deprivation 2019 | MHCLG / data.gov.uk | England (LSOA) | 2019 |
+| Traffic Count Points & AADF | DfT / roadtraffic.dft.gov.uk | Great Britain | 2000–2024 |
+| LAEI 2022 — Road Speeds (Major & Minor) | GLA / data.london.gov.uk | Greater London | 2022 |
+
+### 3.2 Data Preparation
+
+Data was prepared using the following methods: 
+
+| Category | Source / Method | Description & Preprocessing |
+| :--- | :--- | :--- |
+| Target Variable (KSI)| STATS19 (Greater London) | Binary classification: Severity 1 (Fatal) & 2 (Serious) aggregated into positive class; Severity 3 (Slight) as negative class. |
+| Network Measures | Graph-based Centrality | Degree, betweenness, and closeness centrality; spatially snapped to nearest network node and joined to collision records. |
+| Traffic Volume | DfT AADF (2020–2024) | Collisions were matched to nearest DfT traffic count point where total motor vehicle flow was log-transformed to normalize right-skewed distribution. |
+| Road Speed Proxy | LAEI 2022 & Temporal Features | Proxy for impact speed using average operating speeds; integrated with diurnal features (hour/time-period). Although restricted-access [OS NGD Transport Network](https://www.ordnancesurvey.co.uk/products/os-ngd-api-features/transport) data offers higher-resolution link-level speeds, the LAEI-temporal approach provides a minimal accessible alternative for capturing impact-related risk |
+| Deprivation | IMD 2019 Deciles | Three-dimensional socioeconomic context: `imd_decile` (location), `mean_driver_imd`, and `mean_casualty_imd`. |
+
+### 3.3 Variables Selected
+
+The final analytical feature set comprised 43 variables in 7 groups.
+
+**Target variable**
+
+| Variable | Type | Definition |
+|---|---|---|
+| `severity_binary` | Binary | 1 = KSI (Fatal or Serious); 0 = Slight. Derived from STATS19 `collision_severity` codes 1 and 2. |
+
+**Graph centrality (3)**
+
+| Variable | Type | Definition |
+|---|---|---|
+| `closeness_centrality` | Continuous | Reciprocal of mean shortest-path distance from node to all others; reflects network accessibility. |
+| `betweenness_centrality` | Continuous | Proportion of all shortest paths passing through a node; reflects throughput load and conflict potential. |
+| `degree_centrality` | Continuous | Number of edges connected to a node, normalised by maximum possible; reflects junction complexity. |
+
+**Temporal (4)**
+
+| Variable | Type | Definition |
+|---|---|---|
+| `hour_of_collision` | Integer | Hour of day (0–23); proxy for prevailing operating speeds and traffic state. |
+| `time_period_enc` | Ordinal | AM peak / inter-peak / PM peak / night; captures systematic temporal severity patterns. |
+| `year` |	Integer |	Collision year (2020–2024); captures long-term drift and structural changes in road safety. |
+|`quarter` | Ordinal |	Calendar quarter (1–4); groups Jan-Mar, Apr-Jun, Jul-Sep, Oct-Dec to capture seasonal risk profiles.|
+
+**Collision environment (9)**
+
+| Variable | Type | Definition |
+|---|---|---|
+| `speed_limit` | Ordinal | Posted speed limit in mph (20–70). |
+| `road_type` | Categorical | Roundabout, One-way street, single carriageway, dual carriageway, slip road |
+| `first_road_class` | Categorical | Motorway, Major A-road, A-road, B-road, unclassified  |
+| `junction_detail` | Categorical | Not at junction or within 20 meters, T or staggered, crossroads, 4 arm junction  |
+| `junction_control` | Categorical | Traffic signals, give way, stop, uncontrolled. |
+| `light_conditions` | Categorical | Daylight, darkness (lit / unlit / unknown lighting). |
+| `weather_conditions` | Categorical | Fine, rain, snow, fog, high winds, etc. |
+| `road_surface_conditions` | Categorical | Dry, wet, frost/ice, flood. |
+| `pedestrian_crossing` | Categorical | Crossing facility type within 50 m of collision. |
+
+**Deprivation — three dimensions (3)**
+
+| Variable | Type | Definition |
+|---|---|---|
+| `imd_decile` | Ordinal | IMD 2019 decile of accident LSOA (1 = most deprived); captures road environment quality. |
+| `mean_driver_imd` | Continuous | Mean IMD decile of drivers' home postcodes per collision; proxy for vehicle quality and risk behaviour. |
+| `mean_casualty_imd` | Continuous | Mean IMD decile of casualties' home postcodes per collision; proxy for individual vulnerability. |
+
+**Vehicle-level aggregates (12)**
+
+| Variable | Type | Definition |
+|---|---|---|
+| `motorcycle_involved` | Binary | Any motorcycle or moped involved. |
+| `hgv_involved` | Binary | Any heavy goods vehicle involved. |
+| `cycle_involved` | Binary | Any pedal cycle involved. |
+| `any_skid_overturn` | Binary | Any vehicle skidded or overturned. |
+| `any_hit_offroad_object` | Binary | Any vehicle struck an off-road object (roadside barrier, tree, sign, etc.). |
+| `any_left_carriageway` | Binary | Any vehicle left the carriageway. |
+| `any_front_impact` | Binary | Any vehicle had a front-impact collision (head-on or rear-end). |
+| `any_moving_vehicle` | Binary | At least one vehicle was moving at point of impact (vs. stationary). |
+| `any_turning_vehicle` | Binary | At least one vehicle was executing a turn at point of impact. |
+| `work_journey` | Binary | Any driver making a work or business journey at time of collision. |
+| `mean_driver_age` | Continuous | Mean age of all drivers involved per collision. |
+| `any_male_driver` | Binary | Any male driver involved; used as a risk behaviour proxy. |
+
+**Casualty-level aggregates (9)**
+
+| Variable | Type | Definition |
+|---|---|---|
+| `pedestrian_casualty` | Binary | At least one pedestrian casualty. |
+| `motorcyclist_casualty` | Binary | At least one motorcyclist casualty. |
+| `cyclist_casualty` | Binary | At least one cyclist casualty. |
+| `child_casualty` | Binary | At least one casualty aged under 16. |
+| `elderly_casualty` | Binary | At least one casualty aged 70 or over. |
+| `min_casualty_age` | Integer | Age of youngest casualty; captures child involvement continuously. |
+| `ped_on_crossing` | Binary | Pedestrian struck while on or near a marked crossing. |
+| `ped_jaywalking` | Binary | Pedestrian struck along carriageway or crossing elsewhere |
+| `n_casualties` | Integer | Total number of casualties per collision; measures collision severity scale. |
+
+**Traffic volume and speed (3)**
+
+| Variable | Type | Definition |
+|---|---|---|
+| `aadf_log` | Continuous | Log-transformed total annual average daily motor vehicle flow at nearest count point. |
+| `accident_rate_clipped` | Continuous | Accidents per million vehicle-days at nearest count point (99th-percentile clipped). |
+| `avg_speed_kph` | Continuous | LAEI 2022 average operating speed: major-road link speed (≤30 m match) or minor-road 1 km² grid fallback. |
+
+### 3.4 Data Quality
+
+The table summarises data completeness at each integration stage.
+
+| Stage | Records | Notes |
+|---|---|---|
+| STATS19 national (2020–2024) | ~1,900,000 | England & Wales, all severities |
+| Filtered to Greater London boundary | 109,024 | Point-in-polygon clip to GLA boundary |
+| LAEI road speed assigned | 109,023 | 99.99% coverage; 1 record unmatched |
+| AADF-matched (≤1,000 m count point) | 103,759 | 95.2% of London collisions |
+| After feature dropna (final model) | 103,740 | 19 records dropped; 99.98% retention |
+| — of which KSI (positive class) | ~16,391 | 15.8% KSI rate |
+| — of which Slight (negative class) | ~87,349 | 84.2% slight rate |
+| Training set (70%) | 72,618 | Stratified split; class balance preserved |
+| Held-out test set (30%) | 31,122 | Stratified split; never used during training |
+
+
+```{python}
+#| echo: false
+#| warning: false
+#| output: false
+
+import pandas as pd
+import geopandas as gpd
+import numpy as np
+import osmnx as ox
+import networkx as nx
+import warnings
+from pathlib import Path
+
+```
+
