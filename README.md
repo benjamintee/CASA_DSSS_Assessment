@@ -7,4 +7,4 @@ This individual assignment aims to test the student's ability to conduct in-dept
 
 The requirements are set out [here](https://huanfachen.github.io/DSSS_2025/assessments/)  
 The marking scheme can be found [here](https://huanfachen.github.io/DSSS_2025/assessments/#marking-scheme)  
-The individual assessment can be found [here](https://benjamintee.github.io/CASA_UDV_Assessment/Energy_Consumption.html)
+The individual assessment can be found [here](https://benjamintee.github.io/DSSS/London_Accident_Severity.html)
