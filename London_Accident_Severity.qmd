@@ -78,7 +78,7 @@ KSI risk determinants are multi-dimensional. Speed limit, lighting, road surface
 
 Critically, [Sarkar, Webster & Kumari (2018)](https://www-tandfonline-com.libproxy.ucl.ac.uk/doi/epdf/10.1080/15568318.2017.1402972?needAccess=true) demonstrated in a Greater London study that street network topology, specifically betweenness centrality, divergence ratio, and hull radius, were associated with KSI odds alongside speed and deprivation, establishing that a location's structural position within the road network shapes severity outcomes.
 
-This study combines OpenStreetMap-derived centrality measures with STATS19, the Index of Multiple Deprivation, DfT AADF traffic counts, and LAEI 2022 road speed data to predict KSI outcomes across London (2020–2024). Three tree-based classifiers are evaluated under stratified cross-validation with Synthetic Minority Over-sampling Technique (SMOTE) [(Chawla et al., 2002)](https://arxiv.org/pdf/1106.1813), and model decisions interpreted with SHAP [(Lundberg & Lee, 2017)](https://arxiv.org/pdf/1705.07874) to surface key predictors of collision severity.
+This study combines OpenStreetMap-derived centrality measures with STATS19, the Index of Multiple Deprivation, DfT AADF traffic counts, and LAEI 2022 road speed data to predict KSI outcomes across London (2020–2024). Three tree-based classifiers are evaluated under stratified cross-validation with Synthetic Minority Over-sampling Technique (SMOTE) [(Chawla et al., 2002)](https://arxiv.org/pdf/1106.1813), and model decisions interpreted with SHaley Additive exPlanations (SHAP) [(Lundberg & Lee, 2017)](https://arxiv.org/pdf/1705.07874) to surface key predictors of collision severity.
 
 ------------------------------------------------------------------------
 
@@ -117,7 +117,7 @@ The analytical feature matrix was constructed from seven datasets.
 Data was prepared using the following methods:
 
 | Category | Source / Method | Description & Preprocessing |
-|:------------------|:------------------|:---------------------------------|
+|:------------|:--------------|:--------------------------------------------|
 | Target Variable (KSI) | STATS19 (Greater London) | Binary classification: Severity 1 (Fatal) & 2 (Serious) aggregated into positive class; Severity 3 (Slight) as negative class. |
 | Network Measures | Graph-based Centrality | Degree, betweenness, and closeness centrality; spatially snapped to nearest network node and joined to collision records. |
 | Traffic Volume | DfT AADF (2020–2024) | Collisions were matched to nearest DfT traffic count point where total motor vehicle flow was log-transformed to normalize right-skewed distribution. |
@@ -147,9 +147,9 @@ The final analytical feature set comprised 43 variables in 7 groups.
 | Variable | Type | Definition |
 |----------------|---------|-----------------------------------------------|
 | `hour_of_collision` | Integer | Hour of day (0–23); proxy for prevailing operating speeds and traffic state. |
-| `time_period_enc` | Ordinal | AM peak / inter-peak / PM peak / night; captures systematic temporal severity patterns. |
+| `time_period_enc` | Categorical | AM peak / inter-peak / PM peak / night; captures systematic temporal severity patterns. |
 | `year` | Integer | Collision year (2020–2024); captures long-term drift and structural changes in road safety. |
-| `quarter` | Ordinal | Calendar quarter (1–4); groups Jan-Mar, Apr-Jun, Jul-Sep, Oct-Dec to capture seasonal risk profiles. |
+| `quarter` | Categorical | Calendar quarter (1–4); groups Jan-Mar, Apr-Jun, Jul-Sep, Oct-Dec to capture seasonal risk profiles. |
 
 **Collision environment (9)**
 
@@ -170,8 +170,8 @@ The final analytical feature set comprised 43 variables in 7 groups.
 | Variable | Type | Definition |
 |----------------|--------|------------------------------------------------|
 | `imd_decile` | Ordinal | IMD 2019 decile of accident LSOA (1 = most deprived); captures road environment quality. |
-| `mean_driver_imd` | Continuous | Mean IMD decile of drivers' home postcodes per collision; proxy for vehicle quality and risk behaviour. |
-| `mean_casualty_imd` | Continuous | Mean IMD decile of casualties' home postcodes per collision; proxy for individual vulnerability. |
+| `mean_driver_imd` | Ordinal | Mean IMD decile of drivers' home postcodes per collision; proxy for vehicle quality and risk behaviour. |
+| `mean_casualty_imd` | Ordinal | Mean IMD decile of casualties' home postcodes per collision; proxy for individual vulnerability. |
 
 **Vehicle-level aggregates (12)**
 
@@ -419,10 +419,10 @@ print(f"  {'TOTAL':<25s}: {total:2d} features")
 
 EDA revealed the following distributional patterns:
 
-1.  KSI proportion from 2020 to 2024 rose from 14.2% to 17.4%, with 2020 likey reflecting pandemic-suppressed volumes rather than higher safety (Figure 1A).
-2.  Collisions at high-betweenness and high-closeness junctions carried elevated KSI rates (Figure 1B).
-3.  Deprivation analysis revealed that more deprived areas generated substantially more collisions but marginally lower KSI rates, possibly due to slower urban road environments (Figure 1C). At the individual casualty level, KSI rates were almost flat across residential deprivation quartiles (18.8–21.2%), confirming that the higher per-population burden in deprived communities was likely driven by collision frequency rather than conditional severity (Figure 1D).
-4.  Pedestrians faced the highest conditional risk at 276 KSI per 1,000 collisions, nearly three times that of motorcyclists (Figure 1E).
+1.  From 2020 to 2024, **KSI proportion rose from 14.2% to 17.4%**, with 2020 likely reflecting pandemic-suppressed volumes rather than higher safety (Figure 1A).
+2.  Collisions at **high-betweenness and high-closeness junctions carried elevated KSI rates** (Figure 1B).
+3.  Deprivation analysis revealed that **more deprived areas generated substantially more collisions but marginally lower KSI rates**, possibly due to slower urban road environments (Figure 1C). At the individual casualty level, KSI rates were almost flat across residential deprivation quartiles (18.8–21.2%), confirming that the higher per-population burden in deprived communities was likely driven by collision frequency rather than conditional severity (Figure 1D).
+4.  P**edestrians faced the highest conditional risk at 276 KSI per 1,000 collisions**, nearly three times that of motorcyclists (Figure 1E).
 
 ```{python}
 #| warning: false
@@ -640,7 +640,7 @@ Decision Tree, Random Forest, and XGBoost, were selected for their architectural
 
 ### 5.2 Class Imbalance and SMOTE
 
-One challenge in modelling accident severity is **target class imbalance**. Training on imbalanced data can cause classifiers to maximise overall accuracy by systematically under-predicting the minority (KSI) class. To address this, we applied the Synthetic Minority Over-sampling Technique (SMOTE) inside each cross-validation fold using an `imblearn.Pipeline`, ensuring that synthetic samples are never created from test-fold data and evaluation metrics reflect genuine out-of-sample performance.
+One challenge in modelling accident severity is **target class imbalance**. Training on imbalanced data can cause classifiers to maximise overall accuracy by systematically under-predicting the minority (KSI) class. To address this, we applied the Synthetic Minority Over-sampling Technique (SMOTE) inside each cross-validation fold using an `imblearn.Pipeline`, ensuring that synthetic samples are never created from validation data and evaluation metrics reflect genuine out-of-sample performance.
 
 ### 5.3 Cross-Validation and Hyperparameter Tuning Pipeline
 
@@ -1313,7 +1313,7 @@ for r in results_ablation:
 
 **Network centrality.** The graph ablation (variant 1) quantified the independent contribution of network topology: removing degree, betweenness, and closeness centrality reduced AUC by 0.014 and sensitivity by 0.109 (ΔMCC = −0.012), confirming that junction topology carries genuine signal beyond casualty type and road environment, consistent with Sarkar et al. (2018).
 
-**SHAP interpretability.** Deprivation features dominated SHAP importance rankings with imd_decile ranked first and mean_casualty_imd ranked second, capturing area and individual deprivation channels respectively. pedestrian_casualty ranked first in permutation importance (ΔMCC = 0.085), confirming pedestrian involvement as the single strongest univariate KSI predictor. motorcyclist_casualty returned positive permutation importance (ΔMCC = 0.026, ranked sixth) reflecting higher risks faced by motorcylists. any_hit_offroad_object generated negative SHAP values, consistent with predominantly low-speed, single-vehicle incidents against street furniture.
+**SHAP interpretability.** Deprivation features dominated SHAP importance rankings with imd_decile ranked first and mean_casualty_imd ranked second, capturing area and individual deprivation channels respectively. pedestrian_casualty ranked first in permutation importance (ΔMCC = 0.085), confirming pedestrian involvement as the single strongest univariate KSI predictor. motorcyclist_casualty returned positive permutation importance (ΔMCC = 0.026, ranked sixth) reflecting higher risks faced by motorcyclists. any_hit_offroad_object generated negative SHAP values, consistent with predominantly low-speed, single-vehicle incidents against street furniture.
 
 **Interaction terms and pruning** Dropping five zero-negative permutation importance variables in variant 3 improved AUC by 0.003 and MCC by 0.005 over variant 2. Adding seven interaction terms contributed a 0.014 AUC lift, successfully capturing compound risk mechanisms that constituent features could not represent.
 
