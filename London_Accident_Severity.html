@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-03-31">
+<meta name="dcterms.date" content="2026-04-15">
 
 <title>Predicting Road Collision Severity in London - Integrating Network Centrality, Traffic Speed, and Deprivation (2020-2024)</title>
 <style>
@@ -158,7 +158,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 31, 2026</p>
+      <p class="date">April 15, 2026</p>
     </div>
   </div>
   
@@ -172,7 +172,7 @@ window.Quarto = {
 
 <p>Author: Tee Chin Min Benjamin (A25049107)<br>
 Module: Data Science for Spatial Systems (DSSS) by Dr Huanfa Chen<br>
-Word count (narrative only): ~1,690 words</p>
+Word count (narrative only): ~1,598 words</p>
 <p>Source code and data can be found <a href="https://github.com/benjamintee/CASA_DSSS_Assessment">here</a>.</p>
 <p>HTML version can be found <a href="https://benjamintee.github.io/CASA_DSSS_Assessment/London_Accident_Severity.html">here</a>.</p>
 <div style="page-break-after: always;"></div>
@@ -181,7 +181,7 @@ Word count (narrative only): ~1,690 words</p>
 <p>Road traffic collisions are a leading cause of preventable death and serious injury. In London, despite a <a href="https://www.london.gov.uk/programmes-strategies/transport/improving-londons-roads/vision-zero-london">Vision Zero strategy</a> targeting a 70% reduction in Killed or Seriously Injured (KSI) casualties by 2030, approximately 3,700 people were killed or seriously injured on roads in 2024, with nearly 60% comprising pedestrians and cyclists <a href="https://content.tfl.gov.uk/casualties-in-greater-london-2024.pdf">(TfL, 2024)</a>. KSI, defined within STATS19 as fatalities and injuries involving fracture, concussion, internal trauma, or inpatient hospitalisation, represents an area for critical attention. Understanding <em>which</em> collisions result in KSI outcomes and <em>why</em> has implications for infrastructure investment, emergency resource allocation, and targeted safety intervention.</p>
 <p>KSI risk determinants are multi-dimensional. Speed limit, lighting, road surface, and junction characteristics emerge as primary severity predictors in ensemble modelling studies <a href="https://arxiv.org/pdf/2512.04022">(Tong, 2025)</a>. Deprivation compounds this, with pedestrians in the most deprived neighbourhoods facing higher KSI probability than those in least deprived areas <a href="https://discovery.ucl.ac.uk/id/eprint/10206226/1/Inequalities%20in%20road%20safety%20outcomes%20Christie.pdf">(Christie et al., 2019)</a>.</p>
 <p>Critically, <a href="https://www-tandfonline-com.libproxy.ucl.ac.uk/doi/epdf/10.1080/15568318.2017.1402972?needAccess=true">Sarkar, Webster &amp; Kumari (2018)</a> demonstrated in a Greater London study that street network topology, specifically betweenness centrality, divergence ratio, and hull radius, were associated with KSI odds alongside speed and deprivation, establishing that a location’s structural position within the road network shapes severity outcomes.</p>
-<p>This study combines OpenStreetMap-derived centrality measures with STATS19, the Index of Multiple Deprivation, DfT AADF traffic counts, and LAEI 2022 road speed data to predict KSI outcomes across London (2020–2024). Three tree-based classifiers are evaluated under stratified cross-validation with Synthetic Minority Over-sampling Technique (SMOTE) <a href="https://arxiv.org/pdf/1106.1813">(Chawla et al., 2002)</a>, and model decisions interpreted with SHAP <a href="https://arxiv.org/pdf/1705.07874">(Lundberg &amp; Lee, 2017)</a> to surface key predictors of collision severity.</p>
+<p>This study combines OpenStreetMap-derived centrality measures with STATS19, the Index of Multiple Deprivation, DfT AADF traffic counts, and LAEI 2022 road speed data to predict KSI outcomes across London (2020–2024). Three tree-based classifiers are evaluated under stratified cross-validation with Synthetic Minority Over-sampling Technique (SMOTE) <a href="https://arxiv.org/pdf/1106.1813">(Chawla et al., 2002)</a>, and model decisions interpreted with SHaley Additive exPlanations (SHAP) <a href="https://arxiv.org/pdf/1705.07874">(Lundberg &amp; Lee, 2017)</a> to surface key predictors of collision severity.</p>
 <hr>
 </section>
 <section id="research-question" class="level2">
@@ -199,7 +199,6 @@ Word count (narrative only): ~1,690 words</p>
 <h2 class="anchored" data-anchor-id="data">3. Data</h2>
 <section id="data-sources" class="level3">
 <h3 class="anchored" data-anchor-id="data-sources">3.1 Data Sources</h3>
-<p>The analytical feature matrix was constructed from seven datasets.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -263,7 +262,6 @@ Word count (narrative only): ~1,690 words</p>
 </section>
 <section id="data-preparation" class="level3">
 <h3 class="anchored" data-anchor-id="data-preparation">3.2 Data Preparation</h3>
-<p>Data was prepared using the following methods:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -307,9 +305,9 @@ Word count (narrative only): ~1,690 words</p>
 <p><strong>Target variable</strong></p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 49%">
+<col style="width: 21%">
+<col style="width: 12%">
+<col style="width: 66%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -329,9 +327,9 @@ Word count (narrative only): ~1,690 words</p>
 <p><strong>Graph centrality (3)</strong></p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 49%">
+<col style="width: 22%">
+<col style="width: 12%">
+<col style="width: 65%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -361,9 +359,9 @@ Word count (narrative only): ~1,690 words</p>
 <p><strong>Temporal (4)</strong></p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 26%">
-<col style="width: 26%">
-<col style="width: 47%">
+<col style="width: 22%">
+<col style="width: 12%">
+<col style="width: 65%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -380,7 +378,7 @@ Word count (narrative only): ~1,690 words</p>
 </tr>
 <tr class="even">
 <td><code>time_period_enc</code></td>
-<td>Ordinal</td>
+<td>Categorical</td>
 <td>AM peak / inter-peak / PM peak / night; captures systematic temporal severity patterns.</td>
 </tr>
 <tr class="odd">
@@ -390,7 +388,7 @@ Word count (narrative only): ~1,690 words</p>
 </tr>
 <tr class="even">
 <td><code>quarter</code></td>
-<td>Ordinal</td>
+<td>Categorical</td>
 <td>Calendar quarter (1–4); groups Jan-Mar, Apr-Jun, Jul-Sep, Oct-Dec to capture seasonal risk profiles.</td>
 </tr>
 </tbody>
@@ -398,9 +396,9 @@ Word count (narrative only): ~1,690 words</p>
 <p><strong>Collision environment (9)</strong></p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 26%">
-<col style="width: 26%">
-<col style="width: 47%">
+<col style="width: 22%">
+<col style="width: 11%">
+<col style="width: 66%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -460,9 +458,9 @@ Word count (narrative only): ~1,690 words</p>
 <p><strong>Deprivation — three dimensions (3)</strong></p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 26%">
-<col style="width: 26%">
-<col style="width: 47%">
+<col style="width: 22%">
+<col style="width: 11%">
+<col style="width: 66%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -479,12 +477,12 @@ Word count (narrative only): ~1,690 words</p>
 </tr>
 <tr class="even">
 <td><code>mean_driver_imd</code></td>
-<td>Continuous</td>
+<td>Ordinal</td>
 <td>Mean IMD decile of drivers’ home postcodes per collision; proxy for vehicle quality and risk behaviour.</td>
 </tr>
 <tr class="odd">
 <td><code>mean_casualty_imd</code></td>
-<td>Continuous</td>
+<td>Ordinal</td>
 <td>Mean IMD decile of casualties’ home postcodes per collision; proxy for individual vulnerability.</td>
 </tr>
 </tbody>
@@ -492,9 +490,9 @@ Word count (narrative only): ~1,690 words</p>
 <p><strong>Vehicle-level aggregates (12)</strong></p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 26%">
-<col style="width: 26%">
-<col style="width: 47%">
+<col style="width: 22%">
+<col style="width: 11%">
+<col style="width: 66%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -569,9 +567,9 @@ Word count (narrative only): ~1,690 words</p>
 <p><strong>Casualty-level aggregates (9)</strong></p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 26%">
-<col style="width: 26%">
-<col style="width: 47%">
+<col style="width: 22%">
+<col style="width: 11%">
+<col style="width: 66%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -631,9 +629,9 @@ Word count (narrative only): ~1,690 words</p>
 <p><strong>Traffic volume and speed (3)</strong></p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 26%">
-<col style="width: 26%">
-<col style="width: 47%">
+<col style="width: 22%">
+<col style="width: 11%">
+<col style="width: 66%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -663,12 +661,11 @@ Word count (narrative only): ~1,690 words</p>
 </section>
 <section id="data-quality" class="level3">
 <h3 class="anchored" data-anchor-id="data-quality">3.4 Data Quality</h3>
-<p>The table summarises data completeness at each integration stage.</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 37%">
-<col style="width: 25%">
-<col style="width: 37%">
+<col style="width: 30%">
+<col style="width: 16%">
+<col style="width: 52%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -946,10 +943,10 @@ Feature groups:
 <h2 class="anchored" data-anchor-id="exploratory-data-analysis-eda">4. Exploratory Data Analysis (EDA)</h2>
 <p>EDA revealed the following distributional patterns:</p>
 <ol type="1">
-<li>KSI proportion from 2020 to 2024 rose from 14.2% to 17.4%, with 2020 likey reflecting pandemic-suppressed volumes rather than higher safety (Figure 1A).</li>
-<li>Collisions at high-betweenness and high-closeness junctions carried elevated KSI rates (Figure 1B).</li>
-<li>Deprivation analysis revealed that more deprived areas generated substantially more collisions but marginally lower KSI rates, possibly due to slower urban road environments (Figure 1C). At the individual casualty level, KSI rates were almost flat across residential deprivation quartiles (18.8–21.2%), confirming that the higher per-population burden in deprived communities was likely driven by collision frequency rather than conditional severity (Figure 1D).</li>
-<li>Pedestrians faced the highest conditional risk at 276 KSI per 1,000 collisions, nearly three times that of motorcyclists (Figure 1E).</li>
+<li>From 2020 to 2024, <strong>KSI proportion rose from 14.2% to 17.4%</strong>, with 2020 likely reflecting pandemic-suppressed volumes rather than higher safety (Figure 1A).</li>
+<li>Collisions at <strong>high-betweenness and high-closeness junctions carried elevated KSI rates</strong> (Figure 1B).</li>
+<li>Deprivation analysis revealed that <strong>more deprived areas generated substantially more collisions but marginally lower KSI rates</strong>, possibly due to slower urban road environments (Figure 1C). At the individual casualty level, KSI rates were almost flat across residential deprivation quartiles (18.8–21.2%), confirming that the higher per-population burden in deprived communities was likely driven by collision frequency rather than conditional severity (Figure 1D).</li>
+<li>P<strong>edestrians faced the highest conditional risk at 276 KSI per 1,000 collisions</strong>, nearly three times that of motorcyclists (Figure 1E).</li>
 </ol>
 <p>::: {#cell-4.1 Exploratory Data Analysis .cell execution_count=3}</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -1171,15 +1168,15 @@ Feature groups:
 </section>
 <section id="class-imbalance-and-smote" class="level3">
 <h3 class="anchored" data-anchor-id="class-imbalance-and-smote">5.2 Class Imbalance and SMOTE</h3>
-<p>One challenge in modelling accident severity is <strong>target class imbalance</strong>. Training on imbalanced data can cause classifiers to maximise overall accuracy by systematically under-predicting the minority (KSI) class. To address this, we applied the Synthetic Minority Over-sampling Technique (SMOTE) inside each cross-validation fold using an <code>imblearn.Pipeline</code>, ensuring that synthetic samples are never created from test-fold data and evaluation metrics reflect genuine out-of-sample performance.</p>
+<p>One challenge in modelling accident severity is <strong>target class imbalance</strong>. Training on imbalanced data can cause classifiers to maximise overall accuracy by systematically under-predicting the minority (KSI) class. To address this, we applied the Synthetic Minority Over-sampling Technique (SMOTE) inside each cross-validation fold using an <code>imblearn.Pipeline</code>, ensuring that synthetic samples are never created from validation data and evaluation metrics reflect genuine out-of-sample performance.</p>
 </section>
 <section id="cross-validation-and-hyperparameter-tuning-pipeline" class="level3">
 <h3 class="anchored" data-anchor-id="cross-validation-and-hyperparameter-tuning-pipeline">5.3 Cross-Validation and Hyperparameter Tuning Pipeline</h3>
 <p>Model selection follows a nested cross-validation strategy. An outer Stratified K-Fold (k = 5) partitions the 70% training set. Within each outer fold, a <code>GridSearchCV</code> inner loop (k = 3) searched the following hyper-parameter spaces:</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 22%">
-<col style="width: 77%">
+<col style="width: 14%">
+<col style="width: 85%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1207,7 +1204,12 @@ Feature groups:
 <h3 class="anchored" data-anchor-id="decision-threshold-tuning">5.4 Decision-Threshold Tuning</h3>
 <p>Following the nested CV, we optimise for the <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9938573/">Matthews Correlation Coefficient (MCC)</a>, which accounts for all four cells of the confusion matrix and is more robust to class imbalance <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9938573/">(Chicco &amp; Jurman, 2020)</a>.</p>
 <p><span class="math display">\[MCC = \frac{TP \times TN - FP \times FN}{\sqrt{(TP + FP)(TP + FN)(TN + FP)(TN + FN)}}\]</span></p>
-<p>Variable Definitions: <span class="math inline">\(TP\)</span>: True Positives (Correctly predicted positive cases) <span class="math inline">\(TN\)</span>: True Negatives (Correctly predicted negative cases) <span class="math inline">\(FP\)</span>: False Positives (Type I error; negative cases predicted as positive) <span class="math inline">\(FN\)</span>: False Negatives (Type II error; positive cases predicted as negative) The result is a value between <span class="math inline">\(-1\)</span> and <span class="math inline">\(+1\)</span>, where <span class="math inline">\(+1\)</span> represents a perfect prediction, <span class="math inline">\(0\)</span> represents a random prediction, and <span class="math inline">\(-1\)</span> represents total disagreement between prediction and observation.</p>
+<p>Variable Definitions:<br>
+<span class="math inline">\(TP\)</span>: True Positives (Correctly predicted positive cases)<br>
+<span class="math inline">\(TN\)</span>: True Negatives (Correctly predicted negative cases)<br>
+<span class="math inline">\(FP\)</span>: False Positives (Type I error; negative cases predicted as positive)<br>
+<span class="math inline">\(FN\)</span>: False Negatives (Type II error; positive cases predicted as negative)<br>
+The result is a value between <span class="math inline">\(-1\)</span> and <span class="math inline">\(+1\)</span>, where <span class="math inline">\(+1\)</span> represents a perfect prediction, <span class="math inline">\(0\)</span> represents a random prediction, and <span class="math inline">\(-1\)</span> represents total disagreement between prediction and observation.</p>
 <p>The tuned threshold is applied to the final test-set evaluation to produce the reported precision, recall, and MCC scores.</p>
 <div id="stratified-k-fold-cv-with-smote--gridsearchcv" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Workflow per fold:</span></span>
@@ -1589,14 +1591,13 @@ XGBoost — threshold=0.45 (MCC-optimal)  0.707827 0.724098 0.243423 0.384985 0.
 <h2 class="anchored" data-anchor-id="results">6. Results</h2>
 <section id="cross-validation-model-comparison" class="level3">
 <h3 class="anchored" data-anchor-id="cross-validation-model-comparison">6.1 Cross-Validation Model Comparison</h3>
-<p>Table 1 summarises mean performance</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 14%">
-<col style="width: 17%">
-<col style="width: 17%">
+<col style="width: 21%">
+<col style="width: 26%">
+<col style="width: 15%">
+<col style="width: 18%">
+<col style="width: 18%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1609,14 +1610,14 @@ XGBoost — threshold=0.45 (MCC-optimal)  0.707827 0.724098 0.243423 0.384985 0.
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><strong>Decision Tree</strong></td>
+<td style="text-align: left;">Decision Tree</td>
 <td style="text-align: center;">0.595 ± 0.005</td>
 <td style="text-align: center;">0.039</td>
 <td style="text-align: center;">0.180</td>
 <td style="text-align: center;">0.858</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><strong>Random Forest</strong></td>
+<td style="text-align: left;">Random Forest</td>
 <td style="text-align: center;">0.634 ± 0.001</td>
 <td style="text-align: center;">0.055</td>
 <td style="text-align: center;">0.138</td>
@@ -1631,7 +1632,7 @@ XGBoost — threshold=0.45 (MCC-optimal)  0.707827 0.724098 0.243423 0.384985 0.
 </tr>
 </tbody>
 </table>
-<p>XGBoost achieved the highest AUC (0.724) with tight fold-to-fold variance (±0.008), indicating superior discriminative ability and adequate generalisation. Random Forest ranked second on AUC (0.634) but produced the lowest MCC (0.055) and negligible sensitivity (0.138), reflecting strong bias toward the majority Slight class. Decision Tree achieved the lowest AUC (0.595) and MCC (0.039).</p>
+<p>XGBoost achieved the <strong>highest AUC (0.724)</strong> with tight fold-to-fold variance (±0.008), indicating superior discriminative ability and adequate generalisation. Random Forest ranked second on AUC (0.634) but produced the lowest MCC (0.055) and negligible sensitivity (0.138), reflecting strong bias toward the majority Slight class. Decision Tree achieved the lowest AUC (0.595) and MCC (0.039).</p>
 <p>XGBoost was selected as the primary model for final evaluation given its superior AUC and the class-weight calibration that produced usable minority-class recall even before threshold tuning.</p>
 </section>
 <section id="threshold-tuning" class="level3">
@@ -1661,57 +1662,48 @@ XGBoost — threshold=0.45 (MCC-optimal)  0.707827 0.724098 0.243423 0.384985 0.
 <span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    sv <span class="op">=</span> shap_values</span>
 <span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co"># ── SHAP Beeswarm Plot ───────────────────────────────────────────────────────</span></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"SHAP Beeswarm Plot — feature impact on Fatal/Serious prediction"</span>)</span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>))</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>shap.summary_plot(sv, X_test, feature_names<span class="op">=</span>feature_cols,</span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>                  show<span class="op">=</span><span class="va">False</span>, max_display<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'SHAP Beeswarm — </span><span class="sc">{</span>best_model_name<span class="sc">}</span><span class="ss">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>, pad<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="co"># ── SHAP Feature Importance (mean |SHAP|) ────────────────────────────────────</span></span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">SHAP Feature Importance — mean |SHAP value|"</span>)</span>
-<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
-<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>shap.summary_plot(sv, X_test, feature_names<span class="op">=</span>feature_cols,</span>
-<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>                  plot_type<span class="op">=</span><span class="st">'bar'</span>, show<span class="op">=</span><span class="va">False</span>, max_display<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'SHAP Feature Importance — </span><span class="sc">{</span>best_model_name<span class="sc">}</span><span class="ss">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>, pad<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Top features table ────────────────────────────────────────────────────────</span></span>
-<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>mean_shap <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">'feature'</span>: feature_cols,</span>
-<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">'mean_abs_shap'</span>: np.<span class="bu">abs</span>(sv).mean(axis<span class="op">=</span><span class="dv">0</span>),</span>
-<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>}).sort_values(<span class="st">'mean_abs_shap'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Top 15 features by mean |SHAP|:"</span>)</span>
-<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mean_shap.head(<span class="dv">15</span>).to_string(index<span class="op">=</span><span class="va">False</span>))</span>
-<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Check where avg_speed_kph ranks</span></span>
-<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>speed_rank <span class="op">=</span> mean_shap.reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>speed_row <span class="op">=</span> speed_rank[speed_rank[<span class="st">'feature'</span>] <span class="op">==</span> <span class="st">'avg_speed_kph'</span>]</span>
-<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span>(speed_row) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>    rank <span class="op">=</span> speed_row.index[<span class="dv">0</span>] <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">avg_speed_kph rank: #</span><span class="sc">{</span>rank<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="bu">len</span>(feature_cols)<span class="sc">}</span><span class="ss"> "</span></span>
-<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"(mean |SHAP| = </span><span class="sc">{</span>speed_row[<span class="st">'mean_abs_shap'</span>]<span class="sc">.</span>values[<span class="dv">0</span>]<span class="sc">:.4f}</span><span class="ss">)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>SHAP Beeswarm Plot — feature impact on Fatal/Serious prediction</code></pre>
-</div>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>))</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>shap.summary_plot(sv, X_test, feature_names<span class="op">=</span>feature_cols,</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>                  show<span class="op">=</span><span class="va">False</span>, max_display<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'SHAP Beeswarm — </span><span class="sc">{</span>best_model_name<span class="sc">}</span><span class="ss">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>, pad<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="co"># ── SHAP Feature Importance (mean |SHAP|) ────────────────────────────────────</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>shap.summary_plot(sv, X_test, feature_names<span class="op">=</span>feature_cols,</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>                  plot_type<span class="op">=</span><span class="st">'bar'</span>, show<span class="op">=</span><span class="va">False</span>, max_display<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'SHAP Feature Importance — </span><span class="sc">{</span>best_model_name<span class="sc">}</span><span class="ss">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>, pad<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Top features table ────────────────────────────────────────────────────────</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>mean_shap <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">'feature'</span>: feature_cols,</span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">'mean_abs_shap'</span>: np.<span class="bu">abs</span>(sv).mean(axis<span class="op">=</span><span class="dv">0</span>),</span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>}).sort_values(<span class="st">'mean_abs_shap'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Top 15 features by mean |SHAP|:"</span>)</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mean_shap.head(<span class="dv">15</span>).to_string(index<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Check where avg_speed_kph ranks</span></span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>speed_rank <span class="op">=</span> mean_shap.reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>speed_row <span class="op">=</span> speed_rank[speed_rank[<span class="st">'feature'</span>] <span class="op">==</span> <span class="st">'avg_speed_kph'</span>]</span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span>(speed_row) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>    rank <span class="op">=</span> speed_row.index[<span class="dv">0</span>] <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">avg_speed_kph rank: #</span><span class="sc">{</span>rank<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="bu">len</span>(feature_cols)<span class="sc">}</span><span class="ss"> "</span></span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"(mean |SHAP| = </span><span class="sc">{</span>speed_row[<span class="st">'mean_abs_shap'</span>]<span class="sc">.</span>values[<span class="dv">0</span>]<span class="sc">:.4f}</span><span class="ss">)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="London_Accident_Severity_files/figure-html/shap-feature-importance--beeswarm-output-2.png" id="shap-feature-importance--beeswarm-1" width="739" height="905" class="figure-img"></p>
+<p><img src="London_Accident_Severity_files/figure-html/shap-feature-importance--beeswarm-output-1.png" id="shap-feature-importance--beeswarm-1" width="739" height="905" class="figure-img"></p>
 </figure>
 </div>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-SHAP Feature Importance — mean |SHAP value|</code></pre>
-</div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="London_Accident_Severity_files/figure-html/shap-feature-importance--beeswarm-output-4.png" id="shap-feature-importance--beeswarm-2" width="757" height="905" class="figure-img"></p>
+<p><img src="London_Accident_Severity_files/figure-html/shap-feature-importance--beeswarm-output-2.png" id="shap-feature-importance--beeswarm-2" width="757" height="905" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1739,60 +1731,60 @@ avg_speed_kph rank: #30/43 (mean |SHAP| = 0.0475)</code></pre>
 </div>
 </div>
 <p>::: {#cell-6.4 Permutation Importance and Feature Drop Candidates .cell execution_count=9}</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Permutation importance measures how much test-set performance degrades when</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># a single feature is randomly shuffled. Unlike SHAP (which decomposes</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># predictions), this directly measures predictive utility.</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Features with zero or negative permutation importance are candidates for</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># removal — they add noise without improving discrimination.</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> permutation_importance</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>perm_result <span class="op">=</span> permutation_importance(</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    final_model, X_test, y_test,</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    scoring<span class="op">=</span>make_scorer(matthews_corrcoef),</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    n_repeats<span class="op">=</span><span class="dv">10</span>,</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span>,</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    n_jobs<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>perm_df <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">'feature'</span>:       feature_cols,</span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">'perm_imp_mean'</span>: perm_result.importances_mean,</span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">'perm_imp_std'</span>:  perm_result.importances_std,</span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>}).sort_values(<span class="st">'perm_imp_mean'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Visualise ─────────────────────────────────────────────────────────────────</span></span>
-<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>))</span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'#d32f2f'</span> <span class="cf">if</span> v <span class="op">&lt;=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">'#1976d2'</span> <span class="cf">for</span> v <span class="kw">in</span> perm_df[<span class="st">'perm_imp_mean'</span>]]</span>
-<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>ax.barh(<span class="bu">range</span>(<span class="bu">len</span>(perm_df)), perm_df[<span class="st">'perm_imp_mean'</span>], </span>
-<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>        xerr<span class="op">=</span>perm_df[<span class="st">'perm_imp_std'</span>], color<span class="op">=</span>colors, edgecolor<span class="op">=</span><span class="st">'white'</span>)</span>
-<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>ax.set_yticks(<span class="bu">range</span>(<span class="bu">len</span>(perm_df)))</span>
-<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>ax.set_yticklabels(perm_df[<span class="st">'feature'</span>], fontsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>ax.invert_yaxis()</span>
-<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>, linestyle<span class="op">=</span><span class="st">'-'</span>)</span>
-<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Permutation Importance (ΔMCC)'</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
-<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Permutation Importance — Feature Drop Candidates (red = ≤ 0)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Drop candidates: zero or negative importance ──────────────────────────────</span></span>
-<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>drop_candidates <span class="op">=</span> perm_df[perm_df[<span class="st">'perm_imp_mean'</span>] <span class="op">&lt;=</span> <span class="dv">0</span>][<span class="st">'feature'</span>].tolist()</span>
-<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>marginal <span class="op">=</span> perm_df[</span>
-<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>    (perm_df[<span class="st">'perm_imp_mean'</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> </span>
-<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>    (perm_df[<span class="st">'perm_imp_mean'</span>] <span class="op">&lt;</span> perm_df[<span class="st">'perm_imp_std'</span>])</span>
-<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>][<span class="st">'feature'</span>].tolist()</span>
-<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Drop candidates (perm importance ≤ 0): </span><span class="sc">{</span><span class="bu">len</span>(drop_candidates)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> drop_candidates:</span>
-<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>    row <span class="op">=</span> perm_df[perm_df[<span class="st">'feature'</span>] <span class="op">==</span> f].iloc[<span class="dv">0</span>]</span>
-<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>f<span class="sc">:&lt;35s}</span><span class="ss">  </span><span class="sc">{</span>row[<span class="st">'perm_imp_mean'</span>]<span class="sc">:+.5f}</span><span class="ss"> ± </span><span class="sc">{</span>row[<span class="st">'perm_imp_std'</span>]<span class="sc">:.5f}</span><span class="ss">"</span>)</span>
-<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Marginal features (positive but &lt; 1 std): </span><span class="sc">{</span><span class="bu">len</span>(marginal)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> marginal:</span>
-<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>    row <span class="op">=</span> perm_df[perm_df[<span class="st">'feature'</span>] <span class="op">==</span> f].iloc[<span class="dv">0</span>]</span>
-<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>f<span class="sc">:&lt;35s}</span><span class="ss">  </span><span class="sc">{</span>row[<span class="st">'perm_imp_mean'</span>]<span class="sc">:+.5f}</span><span class="ss"> ± </span><span class="sc">{</span>row[<span class="st">'perm_imp_std'</span>]<span class="sc">:.5f}</span><span class="ss">"</span>)</span>
-<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Retained features: </span><span class="sc">{</span><span class="bu">len</span>(feature_cols) <span class="op">-</span> <span class="bu">len</span>(drop_candidates)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Permutation importance measures how much test-set performance degrades when</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># a single feature is randomly shuffled. Unlike SHAP (which decomposes</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># predictions), this directly measures predictive utility.</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Features with zero or negative permutation importance are candidates for</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># removal — they add noise without improving discrimination.</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> permutation_importance</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>perm_result <span class="op">=</span> permutation_importance(</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    final_model, X_test, y_test,</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    scoring<span class="op">=</span>make_scorer(matthews_corrcoef),</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    n_repeats<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span>,</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    n_jobs<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>perm_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">'feature'</span>:       feature_cols,</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">'perm_imp_mean'</span>: perm_result.importances_mean,</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">'perm_imp_std'</span>:  perm_result.importances_std,</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>}).sort_values(<span class="st">'perm_imp_mean'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Visualise ─────────────────────────────────────────────────────────────────</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>))</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'#d32f2f'</span> <span class="cf">if</span> v <span class="op">&lt;=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">'#1976d2'</span> <span class="cf">for</span> v <span class="kw">in</span> perm_df[<span class="st">'perm_imp_mean'</span>]]</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>ax.barh(<span class="bu">range</span>(<span class="bu">len</span>(perm_df)), perm_df[<span class="st">'perm_imp_mean'</span>], </span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>        xerr<span class="op">=</span>perm_df[<span class="st">'perm_imp_std'</span>], color<span class="op">=</span>colors, edgecolor<span class="op">=</span><span class="st">'white'</span>)</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>ax.set_yticks(<span class="bu">range</span>(<span class="bu">len</span>(perm_df)))</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>ax.set_yticklabels(perm_df[<span class="st">'feature'</span>], fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>ax.invert_yaxis()</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>, linestyle<span class="op">=</span><span class="st">'-'</span>)</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Permutation Importance (ΔMCC)'</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Permutation Importance — Feature Drop Candidates (red = ≤ 0)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Drop candidates: zero or negative importance ──────────────────────────────</span></span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>drop_candidates <span class="op">=</span> perm_df[perm_df[<span class="st">'perm_imp_mean'</span>] <span class="op">&lt;=</span> <span class="dv">0</span>][<span class="st">'feature'</span>].tolist()</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>marginal <span class="op">=</span> perm_df[</span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>    (perm_df[<span class="st">'perm_imp_mean'</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> </span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>    (perm_df[<span class="st">'perm_imp_mean'</span>] <span class="op">&lt;</span> perm_df[<span class="st">'perm_imp_std'</span>])</span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>][<span class="st">'feature'</span>].tolist()</span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Drop candidates (perm importance ≤ 0): </span><span class="sc">{</span><span class="bu">len</span>(drop_candidates)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> drop_candidates:</span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>    row <span class="op">=</span> perm_df[perm_df[<span class="st">'feature'</span>] <span class="op">==</span> f].iloc[<span class="dv">0</span>]</span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>f<span class="sc">:&lt;35s}</span><span class="ss">  </span><span class="sc">{</span>row[<span class="st">'perm_imp_mean'</span>]<span class="sc">:+.5f}</span><span class="ss"> ± </span><span class="sc">{</span>row[<span class="st">'perm_imp_std'</span>]<span class="sc">:.5f}</span><span class="ss">"</span>)</span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Marginal features (positive but &lt; 1 std): </span><span class="sc">{</span><span class="bu">len</span>(marginal)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> marginal:</span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>    row <span class="op">=</span> perm_df[perm_df[<span class="st">'feature'</span>] <span class="op">==</span> f].iloc[<span class="dv">0</span>]</span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>f<span class="sc">:&lt;35s}</span><span class="ss">  </span><span class="sc">{</span>row[<span class="st">'perm_imp_mean'</span>]<span class="sc">:+.5f}</span><span class="ss"> ± </span><span class="sc">{</span>row[<span class="st">'perm_imp_std'</span>]<span class="sc">:.5f}</span><span class="ss">"</span>)</span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Retained features: </span><span class="sc">{</span><span class="bu">len</span>(feature_cols) <span class="op">-</span> <span class="bu">len</span>(drop_candidates)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1823,9 +1815,9 @@ Retained features: 38</code></pre>
 <p>Seven engineered interaction terms were evaluated alongside ablation on the held-out test set, comparing the contribution of graph features and the effect of pruning zero/negative-importance variables.</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 34%">
-<col style="width: 40%">
+<col style="width: 19%">
+<col style="width: 33%">
+<col style="width: 47%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1875,14 +1867,14 @@ Retained features: 38</code></pre>
 <p>Three feature configurations were evaluated:</p>
 <table class="caption-top table">
 <colgroup>
+<col style="width: 27%">
+<col style="width: 11%">
 <col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 9%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1935,155 +1927,155 @@ Retained features: 38</code></pre>
 <li><p>Pruning five zero/negative-permutation-importance features then yielded the strongest overall configuration (variant 3) with better specificity balance (0.711) than variant 2.</p></li>
 </ul>
 <div id="feature-engineering-and-ablation-study" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Three-way ablation comparing:</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   (1) Original minus graph     — drop degree/betweenness/closeness centrality</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   (2) Original plus interactions — add 7 confirmed interaction terms</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   (3) Original + interactions, pruned — drop 5 negative-permutation features</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop candidates (perm importance ≤ 0):</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   weather_conditions, ped_jaywalking, child_casualty, quarter, ped_on_crossing</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> xgboost <span class="im">import</span> XGBClassifier</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> imblearn.over_sampling <span class="im">import</span> SMOTE</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> matthews_corrcoef, roc_auc_score, confusion_matrix</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Confirmed interaction terms ───────────────────────────────────────────────</span></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>INTERACTION_TERMS <span class="op">=</span> [</span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'hour_x_light'</span>,        <span class="st">'hour_of_collision'</span>,      <span class="st">'light_conditions'</span>),</span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'imd_x_pedestrian'</span>,    <span class="st">'mean_casualty_imd'</span>,      <span class="st">'pedestrian_casualty'</span>),</span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'btwn_x_motorcyclist'</span>, <span class="st">'betweenness_centrality'</span>, <span class="st">'motorcyclist_casualty'</span>),</span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'speed_x_pedestrian'</span>,  <span class="st">'speed_limit'</span>,            <span class="st">'pedestrian_casualty'</span>),</span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'hour_x_work'</span>,         <span class="st">'hour_of_collision'</span>,      <span class="st">'work_journey'</span>),</span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'btwn_x_pedestrian'</span>,   <span class="st">'betweenness_centrality'</span>, <span class="st">'pedestrian_casualty'</span>),</span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>GRAPH_FEATURES  <span class="op">=</span> [<span class="st">'degree_centrality'</span>, <span class="st">'betweenness_centrality'</span>, <span class="st">'closeness_centrality'</span>]</span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>PRUNE_FEATURES  <span class="op">=</span> [<span class="st">'weather_conditions'</span>, <span class="st">'ped_jaywalking'</span>, <span class="st">'child_casualty'</span>,</span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'quarter'</span>, <span class="st">'ped_on_crossing'</span>]</span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Build interaction columns on the original feature set ─────────────────────</span></span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>features_original <span class="op">=</span> feature_cols.copy()</span>
-<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>valid_interactions <span class="op">=</span> []</span>
-<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, feat_a, feat_b <span class="kw">in</span> INTERACTION_TERMS:</span>
-<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> feat_a <span class="kw">in</span> features_original <span class="kw">and</span> feat_b <span class="kw">in</span> features_original:</span>
-<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>        model_df[name] <span class="op">=</span> model_df[feat_a] <span class="op">*</span> model_df[feat_b]</span>
-<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>        valid_interactions.append(name)</span>
-<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'  Warning: </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> skipped — </span><span class="sc">{</span>feat_a<span class="sc">}</span><span class="ss"> or </span><span class="sc">{</span>feat_b<span class="sc">}</span><span class="ss"> not in feature set'</span>)</span>
-<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'any_left_carriageway'</span> <span class="kw">in</span> features_original <span class="kw">and</span> <span class="st">'any_skid_overturn'</span> <span class="kw">in</span> features_original:</span>
-<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>    model_df[<span class="st">'runoff_crash'</span>] <span class="op">=</span> (</span>
-<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>        (model_df[<span class="st">'any_left_carriageway'</span>] <span class="op">==</span> <span class="dv">1</span>) <span class="op">&amp;</span></span>
-<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>        (model_df[<span class="st">'any_skid_overturn'</span>] <span class="op">==</span> <span class="dv">1</span>)</span>
-<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>    ).astype(<span class="bu">int</span>)</span>
-<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>    valid_interactions.append(<span class="st">'runoff_crash'</span>)</span>
-<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>features_with_inter   <span class="op">=</span> features_original <span class="op">+</span> valid_interactions</span>
-<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>features_no_graph     <span class="op">=</span> [f <span class="cf">for</span> f <span class="kw">in</span> features_original <span class="cf">if</span> f <span class="kw">not</span> <span class="kw">in</span> GRAPH_FEATURES]</span>
-<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a>features_pruned       <span class="op">=</span> [f <span class="cf">for</span> f <span class="kw">in</span> features_with_inter <span class="cf">if</span> f <span class="kw">not</span> <span class="kw">in</span> PRUNE_FEATURES]</span>
-<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Feature set sizes:'</span>)</span>
-<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'  Orig.:                         </span><span class="sc">{</span><span class="bu">len</span>(features_original)<span class="sc">:&gt;3}</span><span class="ss"> features'</span>)</span>
-<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'  Orig. – graph:                 </span><span class="sc">{</span><span class="bu">len</span>(features_no_graph)<span class="sc">:&gt;3}</span><span class="ss"> features  '</span></span>
-<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f'(dropped: </span><span class="sc">{</span>GRAPH_FEATURES<span class="sc">}</span><span class="ss">)'</span>)</span>
-<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'  Orig. + </span><span class="sc">{</span><span class="bu">len</span>(valid_interactions)<span class="sc">}</span><span class="ss"> interactions:            '</span></span>
-<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f'</span><span class="sc">{</span><span class="bu">len</span>(features_with_inter)<span class="sc">:&gt;3}</span><span class="ss"> features'</span>)</span>
-<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'  Orig. + interactions, pruned:  </span><span class="sc">{</span><span class="bu">len</span>(features_pruned)<span class="sc">:&gt;3}</span><span class="ss"> features  '</span></span>
-<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f'(dropped: </span><span class="sc">{</span>PRUNE_FEATURES<span class="sc">}</span><span class="ss">)'</span>)</span>
-<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a><span class="co"># ── XGBoost best params from CV ───────────────────────────────────────────────</span></span>
-<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'cv_results'</span> <span class="kw">in</span> <span class="bu">dir</span>():</span>
-<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a>    clean_params <span class="op">=</span> {k.replace(<span class="st">'model__'</span>, <span class="st">''</span>): v</span>
-<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">for</span> k, v <span class="kw">in</span> cv_results[<span class="st">'XGBoost'</span>][<span class="st">'best_params'</span>][<span class="op">-</span><span class="dv">1</span>].items()}</span>
-<span id="cb20-65"><a href="#cb20-65" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb20-66"><a href="#cb20-66" aria-hidden="true" tabindex="-1"></a>    clean_params <span class="op">=</span> {</span>
-<span id="cb20-67"><a href="#cb20-67" aria-hidden="true" tabindex="-1"></a>        <span class="st">'learning_rate'</span>: <span class="fl">0.1</span>, <span class="st">'max_depth'</span>: <span class="dv">4</span>, <span class="st">'n_estimators'</span>: <span class="dv">500</span>,</span>
-<span id="cb20-68"><a href="#cb20-68" aria-hidden="true" tabindex="-1"></a>        <span class="st">'subsample'</span>: <span class="fl">0.8</span>, <span class="st">'scale_pos_weight'</span>: <span class="dv">3</span>,</span>
-<span id="cb20-69"><a href="#cb20-69" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb20-70"><a href="#cb20-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-71"><a href="#cb20-71" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Evaluate all three variants ───────────────────────────────────────────────</span></span>
-<span id="cb20-72"><a href="#cb20-72" aria-hidden="true" tabindex="-1"></a>variants <span class="op">=</span> [</span>
-<span id="cb20-73"><a href="#cb20-73" aria-hidden="true" tabindex="-1"></a>(<span class="ss">f'1. Orig. – graph (</span><span class="sc">{</span><span class="bu">len</span>(features_no_graph)<span class="sc">}</span><span class="ss"> features)'</span>,              features_no_graph),</span>
-<span id="cb20-74"><a href="#cb20-74" aria-hidden="true" tabindex="-1"></a>(<span class="ss">f'2. Orig. + </span><span class="sc">{</span><span class="bu">len</span>(valid_interactions)<span class="sc">}</span><span class="ss"> interactions. (</span><span class="sc">{</span><span class="bu">len</span>(features_with_inter)<span class="sc">}</span><span class="ss"> features)'</span>, features_with_inter),</span>
-<span id="cb20-75"><a href="#cb20-75" aria-hidden="true" tabindex="-1"></a>(<span class="ss">f'3. Orig. + interactions., pruned (</span><span class="sc">{</span><span class="bu">len</span>(features_pruned)<span class="sc">}</span><span class="ss"> features)'</span>,  features_pruned),</span>
-<span id="cb20-76"><a href="#cb20-76" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb20-77"><a href="#cb20-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-78"><a href="#cb20-78" aria-hidden="true" tabindex="-1"></a>results_ablation <span class="op">=</span> []</span>
-<span id="cb20-79"><a href="#cb20-79" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, cols <span class="kw">in</span> variants:</span>
-<span id="cb20-80"><a href="#cb20-80" aria-hidden="true" tabindex="-1"></a>    cols_avail <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> cols <span class="cf">if</span> c <span class="kw">in</span> model_df.columns]</span>
-<span id="cb20-81"><a href="#cb20-81" aria-hidden="true" tabindex="-1"></a>    X_abl <span class="op">=</span> model_df[cols_avail]</span>
-<span id="cb20-82"><a href="#cb20-82" aria-hidden="true" tabindex="-1"></a>    y_abl <span class="op">=</span> model_df[<span class="st">'severity_binary'</span>]</span>
-<span id="cb20-83"><a href="#cb20-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-84"><a href="#cb20-84" aria-hidden="true" tabindex="-1"></a>    X_tr, X_te, y_tr, y_te <span class="op">=</span> train_test_split(</span>
-<span id="cb20-85"><a href="#cb20-85" aria-hidden="true" tabindex="-1"></a>        X_abl, y_abl, test_size<span class="op">=</span><span class="fl">0.3</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y_abl</span>
-<span id="cb20-86"><a href="#cb20-86" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb20-87"><a href="#cb20-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-88"><a href="#cb20-88" aria-hidden="true" tabindex="-1"></a>    sm <span class="op">=</span> SMOTE(random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb20-89"><a href="#cb20-89" aria-hidden="true" tabindex="-1"></a>    X_tr_sm, y_tr_sm <span class="op">=</span> sm.fit_resample(X_tr, y_tr)</span>
-<span id="cb20-90"><a href="#cb20-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-91"><a href="#cb20-91" aria-hidden="true" tabindex="-1"></a>    model_abl <span class="op">=</span> XGBClassifier(</span>
-<span id="cb20-92"><a href="#cb20-92" aria-hidden="true" tabindex="-1"></a>        random_state<span class="op">=</span><span class="dv">42</span>, eval_metric<span class="op">=</span><span class="st">'logloss'</span>,</span>
-<span id="cb20-93"><a href="#cb20-93" aria-hidden="true" tabindex="-1"></a>        verbosity<span class="op">=</span><span class="dv">0</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>, tree_method<span class="op">=</span><span class="st">'hist'</span>,</span>
-<span id="cb20-94"><a href="#cb20-94" aria-hidden="true" tabindex="-1"></a>        <span class="op">**</span>clean_params</span>
-<span id="cb20-95"><a href="#cb20-95" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb20-96"><a href="#cb20-96" aria-hidden="true" tabindex="-1"></a>    model_abl.fit(X_tr_sm, y_tr_sm)</span>
-<span id="cb20-97"><a href="#cb20-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-98"><a href="#cb20-98" aria-hidden="true" tabindex="-1"></a>    prob <span class="op">=</span> model_abl.predict_proba(X_te)[:, <span class="dv">1</span>]</span>
-<span id="cb20-99"><a href="#cb20-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-100"><a href="#cb20-100" aria-hidden="true" tabindex="-1"></a>    best_t, best_mcc_val <span class="op">=</span> <span class="fl">0.5</span>, <span class="fl">0.0</span></span>
-<span id="cb20-101"><a href="#cb20-101" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> np.arange(<span class="fl">0.05</span>, <span class="fl">0.95</span>, <span class="fl">0.01</span>):</span>
-<span id="cb20-102"><a href="#cb20-102" aria-hidden="true" tabindex="-1"></a>        pred_t <span class="op">=</span> (prob <span class="op">&gt;=</span> t).astype(<span class="bu">int</span>)</span>
-<span id="cb20-103"><a href="#cb20-103" aria-hidden="true" tabindex="-1"></a>        m_t <span class="op">=</span> matthews_corrcoef(y_te, pred_t)</span>
-<span id="cb20-104"><a href="#cb20-104" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> m_t <span class="op">&gt;</span> best_mcc_val:</span>
-<span id="cb20-105"><a href="#cb20-105" aria-hidden="true" tabindex="-1"></a>            best_mcc_val <span class="op">=</span> m_t</span>
-<span id="cb20-106"><a href="#cb20-106" aria-hidden="true" tabindex="-1"></a>            best_t <span class="op">=</span> t</span>
-<span id="cb20-107"><a href="#cb20-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-108"><a href="#cb20-108" aria-hidden="true" tabindex="-1"></a>    pred  <span class="op">=</span> (prob <span class="op">&gt;=</span> best_t).astype(<span class="bu">int</span>)</span>
-<span id="cb20-109"><a href="#cb20-109" aria-hidden="true" tabindex="-1"></a>    auc   <span class="op">=</span> roc_auc_score(y_te, prob)</span>
-<span id="cb20-110"><a href="#cb20-110" aria-hidden="true" tabindex="-1"></a>    mcc   <span class="op">=</span> matthews_corrcoef(y_te, pred)</span>
-<span id="cb20-111"><a href="#cb20-111" aria-hidden="true" tabindex="-1"></a>    tn, fp, fn_c, tp_c <span class="op">=</span> confusion_matrix(y_te, pred).ravel()</span>
-<span id="cb20-112"><a href="#cb20-112" aria-hidden="true" tabindex="-1"></a>    sens  <span class="op">=</span> tp_c <span class="op">/</span> (tp_c <span class="op">+</span> fn_c)</span>
-<span id="cb20-113"><a href="#cb20-113" aria-hidden="true" tabindex="-1"></a>    spec  <span class="op">=</span> tn  <span class="op">/</span> (tn <span class="op">+</span> fp)</span>
-<span id="cb20-114"><a href="#cb20-114" aria-hidden="true" tabindex="-1"></a>    f1    <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>tp_c <span class="op">/</span> (<span class="dv">2</span><span class="op">*</span>tp_c <span class="op">+</span> fp <span class="op">+</span> fn_c)</span>
-<span id="cb20-115"><a href="#cb20-115" aria-hidden="true" tabindex="-1"></a>    gmean <span class="op">=</span> np.sqrt(sens <span class="op">*</span> spec)</span>
-<span id="cb20-116"><a href="#cb20-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-117"><a href="#cb20-117" aria-hidden="true" tabindex="-1"></a>    results_ablation.append({</span>
-<span id="cb20-118"><a href="#cb20-118" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Variant'</span>:     label,</span>
-<span id="cb20-119"><a href="#cb20-119" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Threshold'</span>:   <span class="bu">round</span>(best_t, <span class="dv">2</span>),</span>
-<span id="cb20-120"><a href="#cb20-120" aria-hidden="true" tabindex="-1"></a>        <span class="st">'AUC'</span>:         <span class="bu">round</span>(auc,   <span class="dv">4</span>),</span>
-<span id="cb20-121"><a href="#cb20-121" aria-hidden="true" tabindex="-1"></a>        <span class="st">'MCC'</span>:         <span class="bu">round</span>(mcc,   <span class="dv">4</span>),</span>
-<span id="cb20-122"><a href="#cb20-122" aria-hidden="true" tabindex="-1"></a>        <span class="st">'F1'</span>:          <span class="bu">round</span>(f1,    <span class="dv">4</span>),</span>
-<span id="cb20-123"><a href="#cb20-123" aria-hidden="true" tabindex="-1"></a>        <span class="st">'G-Mean'</span>:      <span class="bu">round</span>(gmean, <span class="dv">4</span>),</span>
-<span id="cb20-124"><a href="#cb20-124" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Sensitivity'</span>: <span class="bu">round</span>(sens,  <span class="dv">4</span>),</span>
-<span id="cb20-125"><a href="#cb20-125" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Specificity'</span>: <span class="bu">round</span>(spec,  <span class="dv">4</span>),</span>
-<span id="cb20-126"><a href="#cb20-126" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb20-127"><a href="#cb20-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-128"><a href="#cb20-128" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'</span><span class="ch">\n</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb20-129"><a href="#cb20-129" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'  Threshold=</span><span class="sc">{</span>best_t<span class="sc">:.2f}</span><span class="ss">  AUC=</span><span class="sc">{</span>auc<span class="sc">:.4f}</span><span class="ss">  MCC=</span><span class="sc">{</span>mcc<span class="sc">:.4f}</span><span class="ss">  '</span></span>
-<span id="cb20-130"><a href="#cb20-130" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f'Sens=</span><span class="sc">{</span>sens<span class="sc">:.4f}</span><span class="ss">  Spec=</span><span class="sc">{</span>spec<span class="sc">:.4f}</span><span class="ss">  G-Mean=</span><span class="sc">{</span>gmean<span class="sc">:.4f}</span><span class="ss">  F1=</span><span class="sc">{</span>f1<span class="sc">:.4f}</span><span class="ss">'</span>)</span>
-<span id="cb20-131"><a href="#cb20-131" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'  TN=</span><span class="sc">{</span>tn<span class="sc">:,}</span><span class="ss">  FP=</span><span class="sc">{</span>fp<span class="sc">:,}</span><span class="ss">  FN=</span><span class="sc">{</span>fn_c<span class="sc">:,}</span><span class="ss">  TP=</span><span class="sc">{</span>tp_c<span class="sc">:,}</span><span class="ss">'</span>)</span>
-<span id="cb20-132"><a href="#cb20-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-133"><a href="#cb20-133" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Summary ───────────────────────────────────────────────────────────────────</span></span>
-<span id="cb20-134"><a href="#cb20-134" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'</span><span class="ch">\n</span><span class="sc">{</span><span class="st">"="</span><span class="op">*</span><span class="dv">70</span><span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb20-135"><a href="#cb20-135" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  ABLATION SUMMARY'</span>)</span>
-<span id="cb20-136"><a href="#cb20-136" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span><span class="st">"="</span><span class="op">*</span><span class="dv">70</span><span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb20-137"><a href="#cb20-137" aria-hidden="true" tabindex="-1"></a>ablation_df <span class="op">=</span> pd.DataFrame(results_ablation)</span>
-<span id="cb20-138"><a href="#cb20-138" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ablation_df[[<span class="st">'Variant'</span>,<span class="st">'Threshold'</span>,<span class="st">'AUC'</span>,<span class="st">'MCC'</span>,</span>
-<span id="cb20-139"><a href="#cb20-139" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'Sensitivity'</span>,<span class="st">'Specificity'</span>,<span class="st">'G-Mean'</span>]].to_string(index<span class="op">=</span><span class="va">False</span>))</span>
-<span id="cb20-140"><a href="#cb20-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-141"><a href="#cb20-141" aria-hidden="true" tabindex="-1"></a>base <span class="op">=</span> results_ablation[<span class="dv">1</span>]  <span class="co"># interactions model as reference</span></span>
-<span id="cb20-142"><a href="#cb20-142" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'</span><span class="ch">\n</span><span class="ss">Delta vs (2) Original + interactions:'</span>)</span>
-<span id="cb20-143"><a href="#cb20-143" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> r <span class="kw">in</span> results_ablation:</span>
-<span id="cb20-144"><a href="#cb20-144" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> r[<span class="st">'Variant'</span>] <span class="op">==</span> base[<span class="st">'Variant'</span>]:</span>
-<span id="cb20-145"><a href="#cb20-145" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
-<span id="cb20-146"><a href="#cb20-146" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'  </span><span class="sc">{</span>r[<span class="st">"Variant"</span>]<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb20-147"><a href="#cb20-147" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'    ΔMCC=</span><span class="sc">{</span>r[<span class="st">"MCC"</span>]<span class="op">-</span>base[<span class="st">"MCC"</span>]<span class="sc">:+.4f}</span><span class="ss">  '</span></span>
-<span id="cb20-148"><a href="#cb20-148" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f'ΔSens=</span><span class="sc">{</span>r[<span class="st">"Sensitivity"</span>]<span class="op">-</span>base[<span class="st">"Sensitivity"</span>]<span class="sc">:+.4f}</span><span class="ss">  '</span></span>
-<span id="cb20-149"><a href="#cb20-149" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f'ΔAUC=</span><span class="sc">{</span>r[<span class="st">"AUC"</span>]<span class="op">-</span>base[<span class="st">"AUC"</span>]<span class="sc">:+.4f}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Three-way ablation comparing:</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   (1) Original minus graph     — drop degree/betweenness/closeness centrality</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   (2) Original plus interactions — add 7 confirmed interaction terms</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   (3) Original + interactions, pruned — drop 5 negative-permutation features</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop candidates (perm importance ≤ 0):</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   weather_conditions, ped_jaywalking, child_casualty, quarter, ped_on_crossing</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> xgboost <span class="im">import</span> XGBClassifier</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> imblearn.over_sampling <span class="im">import</span> SMOTE</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> matthews_corrcoef, roc_auc_score, confusion_matrix</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Confirmed interaction terms ───────────────────────────────────────────────</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>INTERACTION_TERMS <span class="op">=</span> [</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'hour_x_light'</span>,        <span class="st">'hour_of_collision'</span>,      <span class="st">'light_conditions'</span>),</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'imd_x_pedestrian'</span>,    <span class="st">'mean_casualty_imd'</span>,      <span class="st">'pedestrian_casualty'</span>),</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'btwn_x_motorcyclist'</span>, <span class="st">'betweenness_centrality'</span>, <span class="st">'motorcyclist_casualty'</span>),</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'speed_x_pedestrian'</span>,  <span class="st">'speed_limit'</span>,            <span class="st">'pedestrian_casualty'</span>),</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'hour_x_work'</span>,         <span class="st">'hour_of_collision'</span>,      <span class="st">'work_journey'</span>),</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'btwn_x_pedestrian'</span>,   <span class="st">'betweenness_centrality'</span>, <span class="st">'pedestrian_casualty'</span>),</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>GRAPH_FEATURES  <span class="op">=</span> [<span class="st">'degree_centrality'</span>, <span class="st">'betweenness_centrality'</span>, <span class="st">'closeness_centrality'</span>]</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>PRUNE_FEATURES  <span class="op">=</span> [<span class="st">'weather_conditions'</span>, <span class="st">'ped_jaywalking'</span>, <span class="st">'child_casualty'</span>,</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'quarter'</span>, <span class="st">'ped_on_crossing'</span>]</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Build interaction columns on the original feature set ─────────────────────</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>features_original <span class="op">=</span> feature_cols.copy()</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>valid_interactions <span class="op">=</span> []</span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, feat_a, feat_b <span class="kw">in</span> INTERACTION_TERMS:</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> feat_a <span class="kw">in</span> features_original <span class="kw">and</span> feat_b <span class="kw">in</span> features_original:</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>        model_df[name] <span class="op">=</span> model_df[feat_a] <span class="op">*</span> model_df[feat_b]</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>        valid_interactions.append(name)</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'  Warning: </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> skipped — </span><span class="sc">{</span>feat_a<span class="sc">}</span><span class="ss"> or </span><span class="sc">{</span>feat_b<span class="sc">}</span><span class="ss"> not in feature set'</span>)</span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'any_left_carriageway'</span> <span class="kw">in</span> features_original <span class="kw">and</span> <span class="st">'any_skid_overturn'</span> <span class="kw">in</span> features_original:</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>    model_df[<span class="st">'runoff_crash'</span>] <span class="op">=</span> (</span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>        (model_df[<span class="st">'any_left_carriageway'</span>] <span class="op">==</span> <span class="dv">1</span>) <span class="op">&amp;</span></span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>        (model_df[<span class="st">'any_skid_overturn'</span>] <span class="op">==</span> <span class="dv">1</span>)</span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>    ).astype(<span class="bu">int</span>)</span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>    valid_interactions.append(<span class="st">'runoff_crash'</span>)</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>features_with_inter   <span class="op">=</span> features_original <span class="op">+</span> valid_interactions</span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>features_no_graph     <span class="op">=</span> [f <span class="cf">for</span> f <span class="kw">in</span> features_original <span class="cf">if</span> f <span class="kw">not</span> <span class="kw">in</span> GRAPH_FEATURES]</span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>features_pruned       <span class="op">=</span> [f <span class="cf">for</span> f <span class="kw">in</span> features_with_inter <span class="cf">if</span> f <span class="kw">not</span> <span class="kw">in</span> PRUNE_FEATURES]</span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Feature set sizes:'</span>)</span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'  Orig.:                         </span><span class="sc">{</span><span class="bu">len</span>(features_original)<span class="sc">:&gt;3}</span><span class="ss"> features'</span>)</span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'  Orig. – graph:                 </span><span class="sc">{</span><span class="bu">len</span>(features_no_graph)<span class="sc">:&gt;3}</span><span class="ss"> features  '</span></span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f'(dropped: </span><span class="sc">{</span>GRAPH_FEATURES<span class="sc">}</span><span class="ss">)'</span>)</span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'  Orig. + </span><span class="sc">{</span><span class="bu">len</span>(valid_interactions)<span class="sc">}</span><span class="ss"> interactions:            '</span></span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f'</span><span class="sc">{</span><span class="bu">len</span>(features_with_inter)<span class="sc">:&gt;3}</span><span class="ss"> features'</span>)</span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'  Orig. + interactions, pruned:  </span><span class="sc">{</span><span class="bu">len</span>(features_pruned)<span class="sc">:&gt;3}</span><span class="ss"> features  '</span></span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f'(dropped: </span><span class="sc">{</span>PRUNE_FEATURES<span class="sc">}</span><span class="ss">)'</span>)</span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a><span class="co"># ── XGBoost best params from CV ───────────────────────────────────────────────</span></span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'cv_results'</span> <span class="kw">in</span> <span class="bu">dir</span>():</span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a>    clean_params <span class="op">=</span> {k.replace(<span class="st">'model__'</span>, <span class="st">''</span>): v</span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">for</span> k, v <span class="kw">in</span> cv_results[<span class="st">'XGBoost'</span>][<span class="st">'best_params'</span>][<span class="op">-</span><span class="dv">1</span>].items()}</span>
+<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a>    clean_params <span class="op">=</span> {</span>
+<span id="cb18-67"><a href="#cb18-67" aria-hidden="true" tabindex="-1"></a>        <span class="st">'learning_rate'</span>: <span class="fl">0.1</span>, <span class="st">'max_depth'</span>: <span class="dv">4</span>, <span class="st">'n_estimators'</span>: <span class="dv">500</span>,</span>
+<span id="cb18-68"><a href="#cb18-68" aria-hidden="true" tabindex="-1"></a>        <span class="st">'subsample'</span>: <span class="fl">0.8</span>, <span class="st">'scale_pos_weight'</span>: <span class="dv">3</span>,</span>
+<span id="cb18-69"><a href="#cb18-69" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb18-70"><a href="#cb18-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-71"><a href="#cb18-71" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Evaluate all three variants ───────────────────────────────────────────────</span></span>
+<span id="cb18-72"><a href="#cb18-72" aria-hidden="true" tabindex="-1"></a>variants <span class="op">=</span> [</span>
+<span id="cb18-73"><a href="#cb18-73" aria-hidden="true" tabindex="-1"></a>(<span class="ss">f'1. Orig. – graph (</span><span class="sc">{</span><span class="bu">len</span>(features_no_graph)<span class="sc">}</span><span class="ss"> features)'</span>,              features_no_graph),</span>
+<span id="cb18-74"><a href="#cb18-74" aria-hidden="true" tabindex="-1"></a>(<span class="ss">f'2. Orig. + </span><span class="sc">{</span><span class="bu">len</span>(valid_interactions)<span class="sc">}</span><span class="ss"> interactions. (</span><span class="sc">{</span><span class="bu">len</span>(features_with_inter)<span class="sc">}</span><span class="ss"> features)'</span>, features_with_inter),</span>
+<span id="cb18-75"><a href="#cb18-75" aria-hidden="true" tabindex="-1"></a>(<span class="ss">f'3. Orig. + interactions., pruned (</span><span class="sc">{</span><span class="bu">len</span>(features_pruned)<span class="sc">}</span><span class="ss"> features)'</span>,  features_pruned),</span>
+<span id="cb18-76"><a href="#cb18-76" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb18-77"><a href="#cb18-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-78"><a href="#cb18-78" aria-hidden="true" tabindex="-1"></a>results_ablation <span class="op">=</span> []</span>
+<span id="cb18-79"><a href="#cb18-79" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, cols <span class="kw">in</span> variants:</span>
+<span id="cb18-80"><a href="#cb18-80" aria-hidden="true" tabindex="-1"></a>    cols_avail <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> cols <span class="cf">if</span> c <span class="kw">in</span> model_df.columns]</span>
+<span id="cb18-81"><a href="#cb18-81" aria-hidden="true" tabindex="-1"></a>    X_abl <span class="op">=</span> model_df[cols_avail]</span>
+<span id="cb18-82"><a href="#cb18-82" aria-hidden="true" tabindex="-1"></a>    y_abl <span class="op">=</span> model_df[<span class="st">'severity_binary'</span>]</span>
+<span id="cb18-83"><a href="#cb18-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-84"><a href="#cb18-84" aria-hidden="true" tabindex="-1"></a>    X_tr, X_te, y_tr, y_te <span class="op">=</span> train_test_split(</span>
+<span id="cb18-85"><a href="#cb18-85" aria-hidden="true" tabindex="-1"></a>        X_abl, y_abl, test_size<span class="op">=</span><span class="fl">0.3</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y_abl</span>
+<span id="cb18-86"><a href="#cb18-86" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-87"><a href="#cb18-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-88"><a href="#cb18-88" aria-hidden="true" tabindex="-1"></a>    sm <span class="op">=</span> SMOTE(random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb18-89"><a href="#cb18-89" aria-hidden="true" tabindex="-1"></a>    X_tr_sm, y_tr_sm <span class="op">=</span> sm.fit_resample(X_tr, y_tr)</span>
+<span id="cb18-90"><a href="#cb18-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-91"><a href="#cb18-91" aria-hidden="true" tabindex="-1"></a>    model_abl <span class="op">=</span> XGBClassifier(</span>
+<span id="cb18-92"><a href="#cb18-92" aria-hidden="true" tabindex="-1"></a>        random_state<span class="op">=</span><span class="dv">42</span>, eval_metric<span class="op">=</span><span class="st">'logloss'</span>,</span>
+<span id="cb18-93"><a href="#cb18-93" aria-hidden="true" tabindex="-1"></a>        verbosity<span class="op">=</span><span class="dv">0</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>, tree_method<span class="op">=</span><span class="st">'hist'</span>,</span>
+<span id="cb18-94"><a href="#cb18-94" aria-hidden="true" tabindex="-1"></a>        <span class="op">**</span>clean_params</span>
+<span id="cb18-95"><a href="#cb18-95" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-96"><a href="#cb18-96" aria-hidden="true" tabindex="-1"></a>    model_abl.fit(X_tr_sm, y_tr_sm)</span>
+<span id="cb18-97"><a href="#cb18-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-98"><a href="#cb18-98" aria-hidden="true" tabindex="-1"></a>    prob <span class="op">=</span> model_abl.predict_proba(X_te)[:, <span class="dv">1</span>]</span>
+<span id="cb18-99"><a href="#cb18-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-100"><a href="#cb18-100" aria-hidden="true" tabindex="-1"></a>    best_t, best_mcc_val <span class="op">=</span> <span class="fl">0.5</span>, <span class="fl">0.0</span></span>
+<span id="cb18-101"><a href="#cb18-101" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> np.arange(<span class="fl">0.05</span>, <span class="fl">0.95</span>, <span class="fl">0.01</span>):</span>
+<span id="cb18-102"><a href="#cb18-102" aria-hidden="true" tabindex="-1"></a>        pred_t <span class="op">=</span> (prob <span class="op">&gt;=</span> t).astype(<span class="bu">int</span>)</span>
+<span id="cb18-103"><a href="#cb18-103" aria-hidden="true" tabindex="-1"></a>        m_t <span class="op">=</span> matthews_corrcoef(y_te, pred_t)</span>
+<span id="cb18-104"><a href="#cb18-104" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> m_t <span class="op">&gt;</span> best_mcc_val:</span>
+<span id="cb18-105"><a href="#cb18-105" aria-hidden="true" tabindex="-1"></a>            best_mcc_val <span class="op">=</span> m_t</span>
+<span id="cb18-106"><a href="#cb18-106" aria-hidden="true" tabindex="-1"></a>            best_t <span class="op">=</span> t</span>
+<span id="cb18-107"><a href="#cb18-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-108"><a href="#cb18-108" aria-hidden="true" tabindex="-1"></a>    pred  <span class="op">=</span> (prob <span class="op">&gt;=</span> best_t).astype(<span class="bu">int</span>)</span>
+<span id="cb18-109"><a href="#cb18-109" aria-hidden="true" tabindex="-1"></a>    auc   <span class="op">=</span> roc_auc_score(y_te, prob)</span>
+<span id="cb18-110"><a href="#cb18-110" aria-hidden="true" tabindex="-1"></a>    mcc   <span class="op">=</span> matthews_corrcoef(y_te, pred)</span>
+<span id="cb18-111"><a href="#cb18-111" aria-hidden="true" tabindex="-1"></a>    tn, fp, fn_c, tp_c <span class="op">=</span> confusion_matrix(y_te, pred).ravel()</span>
+<span id="cb18-112"><a href="#cb18-112" aria-hidden="true" tabindex="-1"></a>    sens  <span class="op">=</span> tp_c <span class="op">/</span> (tp_c <span class="op">+</span> fn_c)</span>
+<span id="cb18-113"><a href="#cb18-113" aria-hidden="true" tabindex="-1"></a>    spec  <span class="op">=</span> tn  <span class="op">/</span> (tn <span class="op">+</span> fp)</span>
+<span id="cb18-114"><a href="#cb18-114" aria-hidden="true" tabindex="-1"></a>    f1    <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>tp_c <span class="op">/</span> (<span class="dv">2</span><span class="op">*</span>tp_c <span class="op">+</span> fp <span class="op">+</span> fn_c)</span>
+<span id="cb18-115"><a href="#cb18-115" aria-hidden="true" tabindex="-1"></a>    gmean <span class="op">=</span> np.sqrt(sens <span class="op">*</span> spec)</span>
+<span id="cb18-116"><a href="#cb18-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-117"><a href="#cb18-117" aria-hidden="true" tabindex="-1"></a>    results_ablation.append({</span>
+<span id="cb18-118"><a href="#cb18-118" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Variant'</span>:     label,</span>
+<span id="cb18-119"><a href="#cb18-119" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Threshold'</span>:   <span class="bu">round</span>(best_t, <span class="dv">2</span>),</span>
+<span id="cb18-120"><a href="#cb18-120" aria-hidden="true" tabindex="-1"></a>        <span class="st">'AUC'</span>:         <span class="bu">round</span>(auc,   <span class="dv">4</span>),</span>
+<span id="cb18-121"><a href="#cb18-121" aria-hidden="true" tabindex="-1"></a>        <span class="st">'MCC'</span>:         <span class="bu">round</span>(mcc,   <span class="dv">4</span>),</span>
+<span id="cb18-122"><a href="#cb18-122" aria-hidden="true" tabindex="-1"></a>        <span class="st">'F1'</span>:          <span class="bu">round</span>(f1,    <span class="dv">4</span>),</span>
+<span id="cb18-123"><a href="#cb18-123" aria-hidden="true" tabindex="-1"></a>        <span class="st">'G-Mean'</span>:      <span class="bu">round</span>(gmean, <span class="dv">4</span>),</span>
+<span id="cb18-124"><a href="#cb18-124" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Sensitivity'</span>: <span class="bu">round</span>(sens,  <span class="dv">4</span>),</span>
+<span id="cb18-125"><a href="#cb18-125" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Specificity'</span>: <span class="bu">round</span>(spec,  <span class="dv">4</span>),</span>
+<span id="cb18-126"><a href="#cb18-126" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb18-127"><a href="#cb18-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-128"><a href="#cb18-128" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'</span><span class="ch">\n</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb18-129"><a href="#cb18-129" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'  Threshold=</span><span class="sc">{</span>best_t<span class="sc">:.2f}</span><span class="ss">  AUC=</span><span class="sc">{</span>auc<span class="sc">:.4f}</span><span class="ss">  MCC=</span><span class="sc">{</span>mcc<span class="sc">:.4f}</span><span class="ss">  '</span></span>
+<span id="cb18-130"><a href="#cb18-130" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f'Sens=</span><span class="sc">{</span>sens<span class="sc">:.4f}</span><span class="ss">  Spec=</span><span class="sc">{</span>spec<span class="sc">:.4f}</span><span class="ss">  G-Mean=</span><span class="sc">{</span>gmean<span class="sc">:.4f}</span><span class="ss">  F1=</span><span class="sc">{</span>f1<span class="sc">:.4f}</span><span class="ss">'</span>)</span>
+<span id="cb18-131"><a href="#cb18-131" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'  TN=</span><span class="sc">{</span>tn<span class="sc">:,}</span><span class="ss">  FP=</span><span class="sc">{</span>fp<span class="sc">:,}</span><span class="ss">  FN=</span><span class="sc">{</span>fn_c<span class="sc">:,}</span><span class="ss">  TP=</span><span class="sc">{</span>tp_c<span class="sc">:,}</span><span class="ss">'</span>)</span>
+<span id="cb18-132"><a href="#cb18-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-133"><a href="#cb18-133" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Summary ───────────────────────────────────────────────────────────────────</span></span>
+<span id="cb18-134"><a href="#cb18-134" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'</span><span class="ch">\n</span><span class="sc">{</span><span class="st">"="</span><span class="op">*</span><span class="dv">70</span><span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb18-135"><a href="#cb18-135" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  ABLATION SUMMARY'</span>)</span>
+<span id="cb18-136"><a href="#cb18-136" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span><span class="st">"="</span><span class="op">*</span><span class="dv">70</span><span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb18-137"><a href="#cb18-137" aria-hidden="true" tabindex="-1"></a>ablation_df <span class="op">=</span> pd.DataFrame(results_ablation)</span>
+<span id="cb18-138"><a href="#cb18-138" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ablation_df[[<span class="st">'Variant'</span>,<span class="st">'Threshold'</span>,<span class="st">'AUC'</span>,<span class="st">'MCC'</span>,</span>
+<span id="cb18-139"><a href="#cb18-139" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'Sensitivity'</span>,<span class="st">'Specificity'</span>,<span class="st">'G-Mean'</span>]].to_string(index<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb18-140"><a href="#cb18-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-141"><a href="#cb18-141" aria-hidden="true" tabindex="-1"></a>base <span class="op">=</span> results_ablation[<span class="dv">1</span>]  <span class="co"># interactions model as reference</span></span>
+<span id="cb18-142"><a href="#cb18-142" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'</span><span class="ch">\n</span><span class="ss">Delta vs (2) Original + interactions:'</span>)</span>
+<span id="cb18-143"><a href="#cb18-143" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> r <span class="kw">in</span> results_ablation:</span>
+<span id="cb18-144"><a href="#cb18-144" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> r[<span class="st">'Variant'</span>] <span class="op">==</span> base[<span class="st">'Variant'</span>]:</span>
+<span id="cb18-145"><a href="#cb18-145" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb18-146"><a href="#cb18-146" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'  </span><span class="sc">{</span>r[<span class="st">"Variant"</span>]<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb18-147"><a href="#cb18-147" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'    ΔMCC=</span><span class="sc">{</span>r[<span class="st">"MCC"</span>]<span class="op">-</span>base[<span class="st">"MCC"</span>]<span class="sc">:+.4f}</span><span class="ss">  '</span></span>
+<span id="cb18-148"><a href="#cb18-148" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f'ΔSens=</span><span class="sc">{</span>r[<span class="st">"Sensitivity"</span>]<span class="op">-</span>base[<span class="st">"Sensitivity"</span>]<span class="sc">:+.4f}</span><span class="ss">  '</span></span>
+<span id="cb18-149"><a href="#cb18-149" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f'ΔAUC=</span><span class="sc">{</span>r[<span class="st">"AUC"</span>]<span class="op">-</span>base[<span class="st">"AUC"</span>]<span class="sc">:+.4f}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Feature set sizes:
   Orig.:                          43 features
@@ -2127,13 +2119,12 @@ Delta vs (2) Original + interactions:
 <h3 class="anchored" data-anchor-id="model-insights">7.1 Model Insights</h3>
 <p><strong>Model Performance</strong>. XGBoost proved the most robust classifier (AUC 0.724 ± 0.008). By implementing scale_pos_weight=3, the model successfully prioritized the minority class during training, achieving a sensitivity of 0.474. Applying an MCC-optimal threshold of 0.43 further boosted sensitivity to 0.625, proving that internal weighting combined with modest threshold tuning is superior to post-hoc adjustments alone.</p>
 <p><strong>Network centrality.</strong> The graph ablation (variant 1) quantified the independent contribution of network topology: removing degree, betweenness, and closeness centrality reduced AUC by 0.014 and sensitivity by 0.109 (ΔMCC = −0.012), confirming that junction topology carries genuine signal beyond casualty type and road environment, consistent with Sarkar et al.&nbsp;(2018).</p>
-<p><strong>SHAP interpretability.</strong> Deprivation features dominated SHAP importance rankings with imd_decile ranked first and mean_casualty_imd ranked second, capturing area and individual deprivation channels respectively. pedestrian_casualty ranked first in permutation importance (ΔMCC = 0.085), confirming pedestrian involvement as the single strongest univariate KSI predictor. motorcyclist_casualty returned positive permutation importance (ΔMCC = 0.026, ranked sixth) reflecting higher risks faced by motorcylists. any_hit_offroad_object generated negative SHAP values, consistent with predominantly low-speed, single-vehicle incidents against street furniture.</p>
+<p><strong>SHAP interpretability.</strong> Deprivation features dominated SHAP importance rankings with imd_decile ranked first and mean_casualty_imd ranked second, capturing area and individual deprivation channels respectively. pedestrian_casualty ranked first in permutation importance (ΔMCC = 0.085), confirming pedestrian involvement as the single strongest univariate KSI predictor. motorcyclist_casualty returned positive permutation importance (ΔMCC = 0.026, ranked sixth) reflecting higher risks faced by motorcyclists. any_hit_offroad_object generated negative SHAP values, consistent with predominantly low-speed, single-vehicle incidents against street furniture.</p>
 <p><strong>Interaction terms and pruning</strong> Dropping five zero-negative permutation importance variables in variant 3 improved AUC by 0.003 and MCC by 0.005 over variant 2. Adding seven interaction terms contributed a 0.014 AUC lift, successfully capturing compound risk mechanisms that constituent features could not represent.</p>
 </section>
 <section id="limitations" class="level3">
 <h3 class="anchored" data-anchor-id="limitations">7.2 Limitations</h3>
 <p>STATS19 is a police-reported dataset subject to systematic under-recording of slight injuries, which introduces class-boundary noise. The absence of key contributory factors such as impact speed, seatbelt usage, alcohol/drug impairment also limits the model’s ability to capture behavioural risk, which likely explains a substantial portion of residual prediction error.</p>
-<p>Network centrality was computed on a static 2023 OSMnx snapshot, and the model is cross-sectional, unable to capture temporal trends in network risk.</p>
 <p>SMOTE generates synthetic minority-class observations that may not reflect realistic collision profiles, though its use within the cross-validation pipeline prevents data leakage.</p>
 <p>The near-flat cross-deprivation KSI rate gradient (18.8-21.2% from most to least deprived) in the exploratory data analysis recasts London’s inequality in road safety as an exposure disparity rather than a severity disparity since deprived areas experience 1.64x more collisions, but not materially worse outcomes per collision.</p>
 <hr>
@@ -2141,7 +2132,7 @@ Delta vs (2) Original + interactions:
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">8. Conclusion</h2>
-<p>This study demonstrated that integrating graph-derived network centrality measures with casualty characteristics and deprivation indicators meaningfully improves KSI prediction for London road collisions. Ablation affirmed that graph centrality provides a distinct signal, confirming that network topology helps to capture residual risk beyond casualty type or road environment.</p>
+<p>This study demonstrated that integrating graph-derived network centrality measures with casualty characteristics and deprivation indicators <strong>meaningfully improves KSI prediction</strong> for London road collisions. Ablation affirmed that graph centrality provides a distinct signal, confirming that network topology helps to capture residual risk beyond casualty type or road environment.</p>
 <p>The optimized XGBoost configuration utilizing targeted interaction terms achieved an <strong>AUC of 0.736</strong> and an <strong>MCC of 0.258</strong>. By correctly identifying <strong>close to 2 in 3 (62.5%)</strong> of KSI incidents, the model offers a minimally viable tool that can sharpen safety intervention. Beyond predictive power, SHAP analysis uncovered a “deprivation paradox”. While per-incident KSI rates remain flat across deprivation deciles, higher collision frequency in deprived areas drives systemic per-population inequality.</p>
 <p>Future refinements should prioritize the integration of temporal speed, graph and flow data to better capture the evolving nature of urban risk.</p>
 <div style="page-break-after: always;"></div>

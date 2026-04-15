@@ -456,7 +456,6 @@ def assign_quarter(m):
     else:
         return 4              # Q4: Oct-Dec
 
-
 gdf['quarter'] = month.apply(assign_quarter)
 
 # Keep 'seasonal' for backward compatibility, but we'll use 'quarter' for modeling

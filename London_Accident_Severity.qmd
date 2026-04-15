@@ -62,7 +62,7 @@ format:
 
 Author: Tee Chin Min Benjamin (A25049107)\
 Module: Data Science for Spatial Systems (DSSS) by Dr Huanfa Chen\
-Word count (narrative only): \~1,690 words
+Word count (narrative only): \~1,598 words
 
 Source code and data can be found [here](https://github.com/benjamintee/CASA_DSSS_Assessment).
 
@@ -100,8 +100,6 @@ This study combines OpenStreetMap-derived centrality measures with STATS19, the 
 
 ### 3.1 Data Sources
 
-The analytical feature matrix was constructed from seven datasets.
-
 | Dataset | Source | Spatial Coverage | Temporal Coverage |
 |------------------|------------------|------------------|------------------|
 | STATS19 — Collisions | DfT / data.gov.uk | England & Wales | 2020–2024 |
@@ -113,8 +111,6 @@ The analytical feature matrix was constructed from seven datasets.
 | LAEI 2022 — Road Speeds (Major & Minor) | GLA / data.london.gov.uk | Greater London | 2022 |
 
 ### 3.2 Data Preparation
-
-Data was prepared using the following methods:
 
 | Category | Source / Method | Description & Preprocessing |
 |:------------|:--------------|:--------------------------------------------|
@@ -213,8 +209,6 @@ The final analytical feature set comprised 43 variables in 7 groups.
 | `avg_speed_kph` | Continuous | LAEI 2022 average operating speed: major-road link speed (≤30 m match) or minor-road 1 km² grid fallback. |
 
 ### 3.4 Data Quality
-
-The table summarises data completeness at each integration stage.
 
 | Stage | Records | Notes |
 |----------------------|------------|--------------------------------------|
@@ -985,8 +979,6 @@ print(comp_df.to_string(index=False))
 
 ### 6.1 Cross-Validation Model Comparison
 
-Table 1 summarises mean performance
-
 | Model         | AUC (mean ± std)  |    MCC    | Sensitivity | Specificity |
 |:--------------|:-----------------:|:---------:|:-----------:|:-----------:|
 | Decision Tree |   0.595 ± 0.005   |   0.039   |    0.180    |    0.858    |
@@ -1320,8 +1312,6 @@ for r in results_ablation:
 ### 7.2 Limitations
 
 STATS19 is a police-reported dataset subject to systematic under-recording of slight injuries, which introduces class-boundary noise. The absence of key contributory factors such as impact speed, seatbelt usage, alcohol/drug impairment also limits the model's ability to capture behavioural risk, which likely explains a substantial portion of residual prediction error.
-
-Network centrality was computed on a static 2023 OSMnx snapshot, and the model is cross-sectional, unable to capture temporal trends in network risk.
 
 SMOTE generates synthetic minority-class observations that may not reflect realistic collision profiles, though its use within the cross-validation pipeline prevents data leakage.
 
